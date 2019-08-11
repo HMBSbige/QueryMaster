@@ -55,7 +55,7 @@ namespace QueryMaster.GameServer
             recvData = ReceiveData();
             if (isMultiPacket)
             {
-                List<byte> data = new List<byte>();
+                var data = new List<byte>();
                 data.AddRange(recvData);
                 while (true)
                 {
@@ -122,10 +122,10 @@ namespace QueryMaster.GameServer
 
             var pktCount = data[8] & 0x0F;
 
-            List<KeyValuePair<int, byte[]>> pktList = new List<KeyValuePair<int, byte[]>>(pktCount);
+            var pktList = new List<KeyValuePair<int, byte[]>>(pktCount);
             pktList.Add(new KeyValuePair<int, byte[]>(data[8] >> 4, data));
 
-            for (int i = 1; i < pktCount; i++)
+            for (var i = 1; i < pktCount; i++)
             {
                 recvData = new byte[BufferSize];
                 recvData = ReceiveData();
@@ -136,7 +136,7 @@ namespace QueryMaster.GameServer
             byteList = new List<byte>();
             byteList.AddRange(pktList[0].Value.Skip(13));
 
-            for (int i = 1; i < pktList.Count; i++)
+            for (var i = 1; i < pktList.Count; i++)
             {
                 byteList.AddRange(pktList[i].Value.Skip(9));
             }
@@ -146,18 +146,18 @@ namespace QueryMaster.GameServer
 
         private byte[] SourcePackets(byte[] data)
         {
-            bool isCompressed = false;
-            int checksum = 0;
+            var isCompressed = false;
+            var checksum = 0;
             byte[] recvData = null;
             List<byte> recvList = null;
             Parser parser = null;
 
-            byte pktCount = data[8];
+            var pktCount = data[8];
 
-            List<KeyValuePair<byte, byte[]>> pktList = new List<KeyValuePair<byte, byte[]>>(pktCount);
+            var pktList = new List<KeyValuePair<byte, byte[]>>(pktCount);
             pktList.Add(new KeyValuePair<byte, byte[]>(data[9], data));
 
-            for (int i = 1; i < pktCount; i++)
+            for (var i = 1; i < pktCount; i++)
             {
                 recvData = ReceiveData();
                 pktList.Add(new KeyValuePair<byte, byte[]>(recvData[9], recvData));
@@ -179,7 +179,7 @@ namespace QueryMaster.GameServer
             }
             recvList.AddRange(parser.GetUnParsedBytes());
 
-            for (int i = 1; i < pktList.Count; i++)
+            for (var i = 1; i < pktList.Count; i++)
             {
                 parser = new Parser(pktList[i].Value);
                 parser.SkipBytes(12);//multipacket header 
@@ -203,7 +203,7 @@ namespace QueryMaster.GameServer
             using (var output = new MemoryStream())
             using (var unZip = new BZip2InputStream(input))
             {
-                int ch = unZip.ReadByte();
+                var ch = unZip.ReadByte();
 
                 while (ch != -1)
                 {

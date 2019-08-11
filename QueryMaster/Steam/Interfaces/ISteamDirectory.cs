@@ -48,7 +48,7 @@ namespace QueryMaster.Steam.Interfaces
         /// <returns>Instance of <see cref="GetCMListResponse"/>.</returns>
         public GetCMListResponse GetCMList(uint cellId, uint maxCount = 10)
         {
-            SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetCMList", Version = 1 };
+            var url = new SteamUrl { Interface = Interface, Method = "GetCMList", Version = 1 };
             url.Parameters.Add(new Parameter { Name = "cellid", Value = cellId.ToString(CultureInfo.InvariantCulture) });
             url.Parameters.Add(new Parameter { Name = "maxcount", Value = maxCount.ToString(CultureInfo.InvariantCulture) });
             return GetParsedResponse<GetCMListResponse>(url);

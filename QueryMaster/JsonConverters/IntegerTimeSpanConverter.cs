@@ -40,9 +40,9 @@ namespace QueryMaster.JsonConverters
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            string value = reader.Value.ToString();
+            var value = reader.Value.ToString();
             double minutes = 0;
-            TimeSpan timeSpan = TimeSpan.Zero;
+            var timeSpan = TimeSpan.Zero;
             if (double.TryParse(value, out minutes))
             {
                 timeSpan = TimeSpan.FromMinutes(minutes);
@@ -52,7 +52,7 @@ namespace QueryMaster.JsonConverters
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            TimeSpan timeSpan = (TimeSpan)value;
+            var timeSpan = (TimeSpan)value;
             writer.WriteValue(timeSpan.ToString());
         }
     }

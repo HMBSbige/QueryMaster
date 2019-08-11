@@ -43,9 +43,9 @@ namespace QueryMaster.JsonConverters
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            List<GetGlobalStatsForGameResponseStat> stats = new List<GetGlobalStatsForGameResponseStat>();
-            JObject jsonObject = JObject.Load(reader);
-            foreach (JProperty i in jsonObject.Properties())
+            var stats = new List<GetGlobalStatsForGameResponseStat>();
+            var jsonObject = JObject.Load(reader);
+            foreach (var i in jsonObject.Properties())
             {
                 stats.Add(new GetGlobalStatsForGameResponseStat
                 {

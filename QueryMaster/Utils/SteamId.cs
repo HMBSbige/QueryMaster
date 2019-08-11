@@ -101,7 +101,7 @@ namespace QueryMaster.Utils
         /// <returns>instance of <see cref="SteamId"/>.</returns>
         public static SteamId FromLegacyFormat(string id)
         {
-            SteamId steamId = new SteamId();
+            var steamId = new SteamId();
             Match match = null;
             if ((match = LegacyRegex.Match(id)).Success)
             {
@@ -110,7 +110,7 @@ namespace QueryMaster.Utils
                     steamId.Universe = Universe.Invalid;
                 if (steamId.Universe == Universe.Invalid)
                     steamId.Universe = Universe.Public;
-                uint accountID = uint.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
+                var accountID = uint.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
                 steamId.AccountId = match.Groups[2].Value == "0" ? (accountID << 1) : ((accountID << 1) + 1);
                 steamId.Instance = Instance.Desktop;
                 steamId.AccountType = AccountType.Individual;
@@ -134,7 +134,7 @@ namespace QueryMaster.Utils
         /// <returns>instance of <see cref="SteamId"/>.</returns>
         public static SteamId FromSteamId3(string id)
         {
-            SteamId steamId = new SteamId();
+            var steamId = new SteamId();
             Match match = null;
             if ((match = SteamId3Regex.Match(id)).Success)
             {
@@ -175,8 +175,8 @@ namespace QueryMaster.Utils
         /// <returns>instance of <see cref="SteamId"/>.</returns>
         public static SteamId FromSteamId64(ulong id)
         {
-            SteamId steamId = new SteamId();
-            byte[] bytes = BitConverter.GetBytes(id);
+            var steamId = new SteamId();
+            var bytes = BitConverter.GetBytes(id);
             if (!BitConverter.IsLittleEndian)
                 Array.Reverse(bytes);
             byte[] accountIdBytes = { bytes[0], bytes[1], bytes[2], bytes[3] };
@@ -211,8 +211,8 @@ namespace QueryMaster.Utils
             SteamId steamId = null;
             if (Uri.IsWellFormedUriString(url, UriKind.Relative))
             {
-                Steam.SteamQuery query = new Steam.SteamQuery(webApiKey);
-                ulong? id = query.ISteamUser.ResolveVanityURL(url).ParsedResponse.SteamId;
+                var query = new Steam.SteamQuery(webApiKey);
+                var id = query.ISteamUser.ResolveVanityURL(url).ParsedResponse.SteamId;
                 if (id == null)
                 {
                     steamId = new SteamId();
@@ -260,7 +260,7 @@ namespace QueryMaster.Utils
         /// <returns>Returns steam id in ID3 format('[C:U:A]' or '[C:U:A:I]').</returns>
         public string ToSteamId3(bool includeInstanceId = false)
         {
-            string id = string.Empty;
+            var id = string.Empty;
             if (includeInstanceId)
                 id = string.Format(CultureInfo.InvariantCulture, "[{0}:{1}:{2}:{3}]", AccountTypeMapper.Instance[AccountType], (int)Universe, AccountId, (int)Instance);
             else
@@ -286,7 +286,7 @@ namespace QueryMaster.Utils
         /// <returns>Returns player's community Url(Profile Url).</returns>
         public Uri ToCommunityUrl()
         {
-            string url = string.Empty;
+            var url = string.Empty;
             if (AccountType == AccountType.Individual)
                 url = "http://steamcommunity.com/profiles/" + ToSteamId64();
             if (AccountType == AccountType.Clan)
@@ -299,15 +299,15 @@ namespace QueryMaster.Utils
         /// <returns>Vanity url.</returns>
         public Uri GetVanityUrl()
         {
-            string vanityUrl = string.Empty;
-            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(ToCommunityUrl());
+            var vanityUrl = string.Empty;
+            var webRequest = (HttpWebRequest)WebRequest.Create(ToCommunityUrl());
             webRequest.AllowAutoRedirect = false;
             webRequest.Timeout = 10000;
-            using (HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse())
+            using (var webResponse = (HttpWebResponse)webRequest.GetResponse())
             {
                 if ((int)webResponse.StatusCode >= 300 && (int)webResponse.StatusCode <= 399)
                 {
-                    string url = webResponse.Headers["Location"];
+                    var url = webResponse.Headers["Location"];
                     if (!string.IsNullOrWhiteSpace(url))
                     {
                         if (url.EndsWith("/", StringComparison.OrdinalIgnoreCase))

@@ -62,7 +62,7 @@ namespace QueryMaster.MasterServer
         /// <summary>
         /// Get region.
         /// </summary>
-        public Region Region { get { return region; } }
+        public Region Region => region;
 
         internal Server(ConnectionInfo conInfo, AttemptCallback attemptCallback)
         {
@@ -138,21 +138,16 @@ namespace QueryMaster.MasterServer
         private void StartReceiving()
         {
             byte[] msg = null, recvBytes = null;
-            bool hasRecvMsg = true, IsNewMsg = true;
-            int recv = 0, attemptCounter = 0, attempts = ConInfo.Retries + 1, batchCounter = 0;
-            IPEndPoint endPoint;
-            List<IPEndPoint> endPoints = null;
-            bool isLastBatch = false;
-            if (lastEndPoint == null)
-                endPoint = SeedEndpoint;
-            else
-                endPoint = lastEndPoint;
+            var IsNewMsg = true;
+            int attemptCounter = 0, attempts = ConInfo.Retries + 1, batchCounter = 0;
+            var isLastBatch = false;
+            var endPoint = lastEndPoint ?? SeedEndpoint;
 
             try
             {
                 while (batchCounter < BatchCount)
                 {
-                    hasRecvMsg = false;
+                    bool hasRecvMsg;
                     if (IsNewMsg)
                     {
                         msg = MasterUtil.BuildPacket(endPoint.ToString(), region, filter);
@@ -161,11 +156,11 @@ namespace QueryMaster.MasterServer
                     }
                     try
                     {
-                        attemptCounter++;
+                        ++attemptCounter;
                         if (AttemptCallback != null)
                             ThreadPool.QueueUserWorkItem(x => AttemptCallback(attemptCounter));
                         Socket.Send(msg);
-                        recv = Socket.Receive(recvBytes);
+                        var recv = Socket.Receive(recvBytes);
                         recvBytes = recvBytes.Take(recv).ToArray();
                         hasRecvMsg = true;
                     }
@@ -192,7 +187,7 @@ namespace QueryMaster.MasterServer
                     {
                         attemptCounter = 0;
                         batchCounter++;
-                        endPoints = MasterUtil.ProcessPacket(recvBytes);
+                        var endPoints = MasterUtil.ProcessPacket(recvBytes);
                         endPoint = endPoints.Last();
                         IsNewMsg = true;
                         lastEndPoint = endPoint;
@@ -224,8 +219,7 @@ namespace QueryMaster.MasterServer
             }
             catch (Exception ex)
             {
-                if (ErrorCallback != null)
-                    ErrorCallback(ex);
+                ErrorCallback?.Invoke(ex);
             }
 
         }

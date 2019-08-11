@@ -50,10 +50,10 @@ namespace QueryMaster.Steam.Interfaces
         /// <returns>Instance of <see cref="GetRecentlyPlayedGamesResponse"/>.</returns>
         public GetRecentlyPlayedGamesResponse GetRecentlyPlayedGames(ulong steamId, uint count = 0)
         {
-            SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetRecentlyPlayedGames", Version = 1, AppendKey = true };
+            var url = new SteamUrl { Interface = Interface, Method = "GetRecentlyPlayedGames", Version = 1, AppendKey = true };
             url.Parameters.Add(new Parameter { Name = "steamid", Value = steamId.ToString(CultureInfo.InvariantCulture) });
             url.Parameters.Add(new Parameter { Name = "count", Value = count.ToString(CultureInfo.InvariantCulture) });
-            GetRecentlyPlayedGamesResponse response = GetParsedResponse<GetRecentlyPlayedGamesResponse>(url);
+            var response = GetParsedResponse<GetRecentlyPlayedGamesResponse>(url);
             if (response.ParsedResponse.Games == null)
                 response.ParsedResponse.Games = new QueryMasterCollection<GetRecentlyPlayedGamesResponseGame>(new List<GetRecentlyPlayedGamesResponseGame>());
             else
@@ -75,15 +75,15 @@ namespace QueryMaster.Steam.Interfaces
         /// <returns>Instance of <see cref="GetOwnedGamesResponse"/>.</returns>
         public GetOwnedGamesResponse GetOwnedGames(ulong steamId, bool includeAppInfo = true, bool IncludeFreeGames = true, params uint[] filters)
         {
-            SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetOwnedGames", Version = 1, AppendKey = true };
+            var url = new SteamUrl { Interface = Interface, Method = "GetOwnedGames", Version = 1, AppendKey = true };
             url.Parameters.Add(new Parameter { Name = "steamid", Value = steamId.ToString(CultureInfo.InvariantCulture) });
             url.Parameters.Add(new Parameter { Name = "include_appinfo", Value = includeAppInfo.ToString() });
             url.Parameters.Add(new Parameter { Name = "include_played_free_games", Value = IncludeFreeGames.ToString() });
-            for (int i = 0; i < filters.Length; i++)
+            for (var i = 0; i < filters.Length; i++)
             {
                 url.Parameters.Add(new Parameter { Name = "appids_filter[" + i + "]", Value = filters[i].ToString(CultureInfo.InvariantCulture) });
             }
-            GetOwnedGamesResponse response = GetParsedResponse<GetOwnedGamesResponse>(url);
+            var response = GetParsedResponse<GetOwnedGamesResponse>(url);
             if (response.ParsedResponse.Games == null)
                 response.ParsedResponse.Games = new QueryMasterCollection<GetOwnedGamesResponseGame>(new List<GetOwnedGamesResponseGame>());
             else
@@ -101,7 +101,7 @@ namespace QueryMaster.Steam.Interfaces
         /// <returns>Instance of <see cref="GetSteamLevelResponse"/>.</returns>
         public GetSteamLevelResponse GetSteamLevel(ulong steamId)
         {
-            SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetSteamLevel", Version = 1, AppendKey = true };
+            var url = new SteamUrl { Interface = Interface, Method = "GetSteamLevel", Version = 1, AppendKey = true };
             url.Parameters.Add(new Parameter { Name = "steamid", Value = steamId.ToString(CultureInfo.InvariantCulture) });
             return GetParsedResponse<GetSteamLevelResponse>(url);
         }
@@ -113,7 +113,7 @@ namespace QueryMaster.Steam.Interfaces
         /// <returns>Instance of <see cref="GetBadgesResponse"/>.</returns>
         public GetBadgesResponse GetBadges(ulong steamId)
         {
-            SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetBadges", Version = 1, AppendKey = true };
+            var url = new SteamUrl { Interface = Interface, Method = "GetBadges", Version = 1, AppendKey = true };
             url.Parameters.Add(new Parameter { Name = "steamid", Value = steamId.ToString(CultureInfo.InvariantCulture) });
             return GetParsedResponse<GetBadgesResponse>(url);
         }
@@ -124,7 +124,7 @@ namespace QueryMaster.Steam.Interfaces
         /// <returns>Instance of <see cref="GetCommunityBadgeProgressResponse"/>.</returns>
         public GetCommunityBadgeProgressResponse GetCommunityBadgeProgress(ulong steamId)
         {
-            SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetCommunityBadgeProgress", Version = 1, AppendKey = true };
+            var url = new SteamUrl { Interface = Interface, Method = "GetCommunityBadgeProgress", Version = 1, AppendKey = true };
             url.Parameters.Add(new Parameter { Name = "steamid", Value = steamId.ToString(CultureInfo.InvariantCulture) });
             return GetParsedResponse<GetCommunityBadgeProgressResponse>(url);
         }
@@ -135,7 +135,7 @@ namespace QueryMaster.Steam.Interfaces
         /// <returns>Instance of <see cref="IsPlayingSharedGameResponse"/>.</returns>
         public IsPlayingSharedGameResponse IsPlayingSharedGame(ulong steamId)
         {
-            SteamUrl url = new SteamUrl { Interface = Interface, Method = "IsPlayingSharedGame", Version = 1, AppendKey = true };
+            var url = new SteamUrl { Interface = Interface, Method = "IsPlayingSharedGame", Version = 1, AppendKey = true };
             url.Parameters.Add(new Parameter { Name = "steamid", Value = steamId.ToString(CultureInfo.InvariantCulture) });
             return GetParsedResponse<IsPlayingSharedGameResponse>(url);
         }

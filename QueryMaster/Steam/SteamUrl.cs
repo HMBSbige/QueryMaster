@@ -74,7 +74,7 @@ namespace QueryMaster.Steam
         [JsonConverter(typeof(StringEnumConverter))]
         public Format Format { get; set; }
         internal static string ApiKey { get; set; }
-        internal static readonly string BaseUrl = "http://api.steampowered.com";
+        internal static readonly string BaseUrl = "https://api.steampowered.com";
         public SteamUrl()
         {
             Parameters = new List<Parameter>();
@@ -85,7 +85,7 @@ namespace QueryMaster.Steam
         /// <returns></returns>
         public override string ToString()
         {
-            Parameter formatParameter = new Parameter { Name = "format", Value = Format.ToString() };
+            var formatParameter = new Parameter { Name = "format", Value = Format.ToString() };
             Parameters.Add(formatParameter);
             Parameter apiKeyParameter = null;
             if (AppendKey)
@@ -93,7 +93,7 @@ namespace QueryMaster.Steam
                 apiKeyParameter = new Parameter { Name = "key", Value = ApiKey };
                 Parameters.Add(apiKeyParameter);
             }
-            string url = BaseUrl + "/" + Interface + "/" + Method + "/v000" + Version + "/?" + string.Join("&", Parameters.Select(x => x.Name + "=" + x.Value));
+            var url = BaseUrl + "/" + Interface + "/" + Method + "/v000" + Version + "/?" + string.Join("&", Parameters.Select(x => x.Name + "=" + x.Value));
             Parameters.Remove(formatParameter);
             if (apiKeyParameter != null)
                 Parameters.Remove(apiKeyParameter);

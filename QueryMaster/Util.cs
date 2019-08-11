@@ -86,7 +86,7 @@ namespace QueryMaster
         }
         internal static byte[] MergeByteArrays(byte[] array1, byte[] array2)
         {
-            byte[] newArray = new byte[array1.Length + array2.Length];
+            var newArray = new byte[array1.Length + array2.Length];
             Buffer.BlockCopy(array1, 0, newArray, 0, array1.Length);
             Buffer.BlockCopy(array2, 0, newArray, array1.Length, array2.Length);
             return newArray;
@@ -94,7 +94,7 @@ namespace QueryMaster
 
         internal static byte[] MergeByteArrays(byte[] array1, byte[] array2, byte[] array3)
         {
-            byte[] newArray = new byte[array1.Length + array2.Length + array3.Length];
+            var newArray = new byte[array1.Length + array2.Length + array3.Length];
             Buffer.BlockCopy(array1, 0, newArray, 0, array1.Length);
             Buffer.BlockCopy(array2, 0, newArray, array1.Length, array2.Length);
             Buffer.BlockCopy(array3, 0, newArray, array1.Length + array2.Length, array3.Length);
@@ -106,7 +106,7 @@ namespace QueryMaster
             IPEndPoint iPEndPoint = null;
             IPAddress address;
             int port;
-            string[] endpoints = endPointStr.Split(':');
+            var endpoints = endPointStr.Split(':');
             if (endpoints.Length == 2 && IPAddress.TryParse(endpoints[0], out address) && int.TryParse(endpoints[1], out port))
                 iPEndPoint = new IPEndPoint(address, port);
             return iPEndPoint;

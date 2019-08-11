@@ -59,7 +59,7 @@ namespace QueryMaster.GameServer.DataObjects
         {
             if (string.IsNullOrEmpty(FilterString))
             {
-                StringBuilder strBuilder = new StringBuilder("^.*");
+                var strBuilder = new StringBuilder("^.*");
                 if (!string.IsNullOrEmpty(Name))
                     strBuilder.Append(Name);
                 strBuilder.Append("<");

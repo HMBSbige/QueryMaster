@@ -52,7 +52,7 @@ namespace QueryMaster.Steam.DataObjects
         {
             if (Socket == null)
                 Socket = new SteamSocket();
-            string response = string.Empty;
+            var response = string.Empty;
             if (format == ReceivedFormat)
                 response = ReceivedResponse;
             else

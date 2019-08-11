@@ -121,16 +121,16 @@ namespace QueryMaster.GameServer
         private ServerInfo getInfo()
         {
             byte[] recvData = null;
-            ServerInfo serverInfo = null;
+            ServerInfo serverInfo;
             try
             {
-                byte[] Query = QueryMsg.InfoQuery;
+                var Query = QueryMsg.InfoQuery;
                 if (IsObsolete)
                     Query = QueryMsg.ObsoleteInfoQuery;
 
                 recvData = new byte[UdpSocket.BufferSize];
 
-                Stopwatch sw = Stopwatch.StartNew();
+                var sw = Stopwatch.StartNew();
                 recvData = UdpSocket.GetResponse(Query, Type);
                 sw.Stop();
                 Latency = sw.ElapsedMilliseconds;
@@ -143,7 +143,7 @@ namespace QueryMaster.GameServer
             }
             catch (Exception e)
             {
-                e.Data.Add("ReceivedData", recvData == null ? new byte[1] : recvData);
+                e.Data.Add("ReceivedData", recvData ?? new byte[1]);
                 throw;
             }
             return serverInfo;
@@ -153,7 +153,7 @@ namespace QueryMaster.GameServer
         private ServerInfo Current(byte[] data)
         {
             ServerInfo server = null;
-            Parser parser = new Parser(data);
+            var parser = new Parser(data);
             if (parser.ReadByte() != (byte)ResponseMsgHeader.A2S_INFO)
                 throw new InvalidHeaderException("A2S_INFO message header is not valid");
             server = new ServerInfo();
@@ -192,7 +192,7 @@ namespace QueryMaster.GameServer
             server.IsSecure = parser.ReadByte() > 0;
             if (Util.ShipIds.Contains(server.Id))
             {
-                ShipInfo ship = new ShipInfo();
+                var ship = new ShipInfo();
                 switch (parser.ReadByte())
                 {
                     case 0: ship.Mode = ShipMode.Hunt; break;
@@ -212,7 +212,7 @@ namespace QueryMaster.GameServer
             server.ExtraInfo = new ExtraInfo();
             if (parser.HasUnParsedBytes)
             {
-                byte edf = parser.ReadByte();
+                var edf = parser.ReadByte();
                 server.ExtraInfo.Port = (edf & 0x80) > 0 ? parser.ReadUShort() : (ushort)0;
                 server.ExtraInfo.SteamId = (edf & 0x10) > 0 ? parser.ReadULong() : 0;
                 if ((edf & 0x40) > 0)
@@ -229,7 +229,7 @@ namespace QueryMaster.GameServer
         private ServerInfo Obsolete(byte[] data)
         {
             ServerInfo server = null;
-            Parser parser = new Parser(data);
+            var parser = new Parser(data);
             if (parser.ReadByte() != (byte)ResponseMsgHeader.A2S_INFO_Obsolete)
                 throw new InvalidHeaderException("A2S_INFO(obsolete) message header is not valid");
             server = new ServerInfo();
@@ -262,11 +262,11 @@ namespace QueryMaster.GameServer
                 return GameEnvironment.Invalid;
             }))();
             server.IsPrivate = parser.ReadByte() > 0;
-            byte mod = parser.ReadByte();
+            var mod = parser.ReadByte();
             server.IsModded = mod > 0;
             if (server.IsModded)
             {
-                ModInfo modinfo = new ModInfo();
+                var modinfo = new ModInfo();
                 modinfo.Link = parser.ReadString();
                 modinfo.DownloadLink = parser.ReadString();
                 parser.ReadByte();//0x00
@@ -322,7 +322,7 @@ namespace QueryMaster.GameServer
                     throw new InvalidHeaderException("A2S_PLAYER message header is not valid");
                 int playerCount = parser.ReadByte();
                 players = new List<PlayerInfo>(playerCount);
-                for (int i = 0; i < playerCount; i++)
+                for (var i = 0; i < playerCount; i++)
                 {
                     parser.ReadByte();
                     players.Add(new PlayerInfo
@@ -407,7 +407,7 @@ namespace QueryMaster.GameServer
 
                 int ruleCount = parser.ReadUShort();
                 rules = new List<Rule>(ruleCount);
-                for (int i = 0; i < ruleCount; i++)
+                for (var i = 0; i < ruleCount; i++)
                 {
                     rules.Add(new Rule { Name = parser.ReadString(), Value = parser.ReadString() });
                 }

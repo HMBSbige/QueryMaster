@@ -218,7 +218,7 @@ namespace QueryMaster.GameServer
             string info;
             try
             {
-                string[] data = LineSplit.Split(logLine, 2);
+                var data = LineSplit.Split(logLine, 2);
                 Timestamp = DateTime.ParseExact(data[0], "MM/dd/yyyy - HH:mm:ss", CultureInfo.InvariantCulture);
                 info = data[1].Remove(data[1].Length - 2);
             }
@@ -237,7 +237,7 @@ namespace QueryMaster.GameServer
 
             OnLogReceive(Timestamp, info);
 
-            string[] result = info.Split(QuoteSplitPattern, StringSplitOptions.RemoveEmptyEntries);
+            var result = info.Split(QuoteSplitPattern, StringSplitOptions.RemoveEmptyEntries);
             try
             {
                 if (info[0] == '\"')
@@ -317,7 +317,7 @@ namespace QueryMaster.GameServer
         private string ApplyFilters(string logLine)
         {
             ThrowIfDisposed();
-            foreach (LogFilter i in Filters)
+            foreach (var i in Filters)
             {
                 if (i.Enabled)
                 {
@@ -442,7 +442,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="ServerCvar"/> event.</param>
         protected virtual void OnServerCvar(DateTime timestamp, string[] info)
         {
-            CvarEventArgs eventArgs = new CvarEventArgs
+            var eventArgs = new CvarEventArgs
             {
                 Timestamp = timestamp,
                 Cvar = info[1],
@@ -470,8 +470,8 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="LogFileStarted"/> event.</param>
         protected virtual void OnLogFileStart(DateTime timestamp, string[] info)
         {
-            string[] tmp = info[5].Split('/');
-            LogStartEventArgs eventArgs = new LogStartEventArgs
+            var tmp = info[5].Split('/');
+            var eventArgs = new LogStartEventArgs
             {
                 Timestamp = timestamp,
                 FileName = info[1],
@@ -501,7 +501,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="MapLoaded"/> event.</param>
         protected virtual void OnMapLoading(DateTime timestamp, string[] info)
         {
-            MapLoadEventArgs eventArgs = new MapLoadEventArgs
+            var eventArgs = new MapLoadEventArgs
             {
                 Timestamp = timestamp,
                 MapName = info[1]
@@ -516,7 +516,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="MapStarted"/> event.</param>
         protected virtual void OnMapStart(DateTime timestamp, string[] info)
         {
-            MapStartEventArgs eventArgs = new MapStartEventArgs
+            var eventArgs = new MapStartEventArgs
             {
                 Timestamp = timestamp,
                 MapName = info[1],
@@ -533,8 +533,8 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="RconMsg"/> event.</param>
         protected virtual void OnRconMsg(DateTime timestamp, string[] info)
         {
-            string[] s = info[5].Split(':');
-            RconEventArgs eventArgs = new RconEventArgs
+            var s = info[5].Split(':');
+            var eventArgs = new RconEventArgs
             {
                 Timestamp = timestamp,
                 IsValid = info[0] == "Rcon: " ? true : false,
@@ -556,7 +556,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="ServerName"/> event.</param>
         protected virtual void OnserverName(DateTime timestamp, string[] info)
         {
-            ServerNameEventArgs eventArgs = new ServerNameEventArgs
+            var eventArgs = new ServerNameEventArgs
             {
                 Timestamp = timestamp,
                 Name = info[1]
@@ -571,7 +571,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="ServerSay"/> event.</param>
         protected virtual void OnServerSay(DateTime timestamp, string[] info)
         {
-            ServerSayEventArgs eventArgs = new ServerSayEventArgs
+            var eventArgs = new ServerSayEventArgs
             {
                 Timestamp = timestamp,
                 Message = info[1]
@@ -587,8 +587,8 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerConnected"/> event.</param>
         protected virtual void OnConnection(DateTime timestamp, string[] info)
         {
-            string[] s = info[2].Split(':');
-            ConnectEventArgs eventArgs = new ConnectEventArgs
+            var s = info[2].Split(':');
+            var eventArgs = new ConnectEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0]),
@@ -606,7 +606,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerValidated"/> event.</param>
         protected virtual void OnValidation(DateTime timestamp, string[] info)
         {
-            PlayerEventArgs eventArgs = new PlayerEventArgs
+            var eventArgs = new PlayerEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0])
@@ -622,7 +622,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerEnteredGame"/> event.</param>
         protected virtual void OnEnterGame(DateTime timestamp, string[] info)
         {
-            PlayerEventArgs eventArgs = new PlayerEventArgs
+            var eventArgs = new PlayerEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0])
@@ -638,7 +638,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerDisconnected"/> event.</param>
         protected virtual void OnDisconnection(DateTime timestamp, string[] info)
         {
-            PlayerEventArgs eventArgs = new PlayerEventArgs
+            var eventArgs = new PlayerEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0])
@@ -653,7 +653,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerKicked"/> event.</param>
         protected virtual void OnKick(DateTime timestamp, string[] info)
         {
-            KickEventArgs eventArgs = new KickEventArgs
+            var eventArgs = new KickEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[1]),
@@ -671,7 +671,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerSuicided"/> event.</param>
         protected virtual void OnSuicide(DateTime timestamp, string[] info)
         {
-            SuicideEventArgs eventArgs = new SuicideEventArgs
+            var eventArgs = new SuicideEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0]),
@@ -688,7 +688,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerJoinedTeam"/> event.</param>
         protected virtual void OnTeamSelection(DateTime timestamp, string[] info)
         {
-            TeamSelectionEventArgs eventArgs = new TeamSelectionEventArgs
+            var eventArgs = new TeamSelectionEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0]),
@@ -705,7 +705,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerChangedRole"/> event.</param>
         protected virtual void OnRoleSelection(DateTime timestamp, string[] info)
         {
-            RoleSelectionEventArgs eventArgs = new RoleSelectionEventArgs
+            var eventArgs = new RoleSelectionEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0]),
@@ -722,7 +722,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerChangedName"/> event.</param>
         protected virtual void OnNameChange(DateTime timestamp, string[] info)
         {
-            NameChangeEventArgs eventArgs = new NameChangeEventArgs
+            var eventArgs = new NameChangeEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0]),
@@ -739,7 +739,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerKilled"/> event.</param>
         protected virtual void OnKill(DateTime timestamp, string[] info)
         {
-            KillEventArgs eventArgs = new KillEventArgs
+            var eventArgs = new KillEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0]),
@@ -757,7 +757,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerInjured"/> event.</param>
         protected virtual void OnInjure(DateTime timestamp, string[] info)
         {
-            InjureEventArgs eventArgs = new InjureEventArgs
+            var eventArgs = new InjureEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0]),
@@ -776,7 +776,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerOnPLayerTriggered"/> event.</param>
         protected virtual void OnPlayer_PlayerAction(DateTime timestamp, string[] info)
         {
-            PlayerOnPlayerEventArgs eventArgs = new PlayerOnPlayerEventArgs
+            var eventArgs = new PlayerOnPlayerEventArgs
             {
                 Timestamp = timestamp,
                 Source = GetPlayerInfo(info[0]),
@@ -794,13 +794,13 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerTriggered"/> event.</param>
         protected virtual void OnPlayerAction(DateTime timestamp, string[] info)
         {
-            string s = string.Empty;
+            var s = string.Empty;
             if (info.Length > 3)
             {
-                for (int i = 3; i < info.Length; i++)
+                for (var i = 3; i < info.Length; i++)
                     s += info[i];
             }
-            PlayerActionEventArgs eventArgs = new PlayerActionEventArgs
+            var eventArgs = new PlayerActionEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0]),
@@ -818,7 +818,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="TeamTriggered"/> event.</param>
         protected virtual void OnTeamAction(DateTime timestamp, string[] info)
         {
-            TeamActionEventArgs eventArgs = new TeamActionEventArgs
+            var eventArgs = new TeamActionEventArgs
             {
                 Timestamp = timestamp,
                 Team = info[1],
@@ -835,7 +835,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="WorldTriggered"/> event.</param>
         protected virtual void OnWorldAction(DateTime timestamp, string[] info)
         {
-            WorldActionEventArgs eventArgs = new WorldActionEventArgs
+            var eventArgs = new WorldActionEventArgs
             {
                 Timestamp = timestamp,
                 Action = info[1]
@@ -850,7 +850,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="Say"/> event.</param>
         protected virtual void OnSay(DateTime timestamp, string[] info)
         {
-            ChatEventArgs eventArgs = new ChatEventArgs
+            var eventArgs = new ChatEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0]),
@@ -867,7 +867,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="TeamSay"/> event.</param>
         protected virtual void OnTeamSay(DateTime timestamp, string[] info)
         {
-            ChatEventArgs eventArgs = new ChatEventArgs
+            var eventArgs = new ChatEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0]),
@@ -884,7 +884,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="TeamAlliance"/> event.</param>
         protected virtual void OnTeamAlliance(DateTime timestamp, string[] info)
         {
-            TeamAllianceEventArgs eventArgs = new TeamAllianceEventArgs
+            var eventArgs = new TeamAllianceEventArgs
             {
                 Timestamp = timestamp,
                 Team1 = info[1],
@@ -901,13 +901,13 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="TeamScoreReport"/> event.</param>
         protected virtual void OnTeamScoreReport(DateTime timestamp, string[] info)
         {
-            string details = string.Empty;
+            var details = string.Empty;
             if (info.Length > 6)
             {
-                for (int i = 6; i < info.Length; i++)
+                for (var i = 6; i < info.Length; i++)
                     details += info[i];
             }
-            TeamScoreReportEventArgs eventArgs = new TeamScoreReportEventArgs
+            var eventArgs = new TeamScoreReportEventArgs
             {
                 Timestamp = timestamp,
                 Team = info[1],
@@ -926,7 +926,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PrivateChat"/> event.</param>
         protected virtual void OnPrivateChat(DateTime timestamp, string[] info)
         {
-            PrivateChatEventArgs eventArgs = new PrivateChatEventArgs
+            var eventArgs = new PrivateChatEventArgs
             {
                 Timestamp = timestamp,
                 Sender = GetPlayerInfo(info[0]),
@@ -944,13 +944,13 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerScoreReport"/> event.</param>
         protected virtual void OnPlayerScoreReport(DateTime timestamp, string[] info)
         {
-            string details = string.Empty;
+            var details = string.Empty;
             if (info.Length > 4)
             {
-                for (int i = 4; i < info.Length; i++)
+                for (var i = 4; i < info.Length; i++)
                     details += info[i];
             }
-            PlayerScoreReportEventArgs eventArgs = new PlayerScoreReportEventArgs
+            var eventArgs = new PlayerScoreReportEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[1]),
@@ -969,7 +969,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerSelectedWeapon"/> event.</param>
         protected virtual void OnWeaponSelection(DateTime timestamp, string[] info)
         {
-            WeaponEventArgs eventArgs = new WeaponEventArgs
+            var eventArgs = new WeaponEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0]),
@@ -986,7 +986,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerSelectedWeapon"/> event.</param>
         protected virtual void OnWeaponPickup(DateTime timestamp, string[] info)
         {
-            WeaponEventArgs eventArgs = new WeaponEventArgs
+            var eventArgs = new WeaponEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0]),
@@ -1009,7 +1009,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="Exception"/> event.</param>
         protected virtual void OnException(DateTime timestamp, string info)
         {
-            ExceptionEventArgs eventArgs = new ExceptionEventArgs
+            var eventArgs = new ExceptionEventArgs
             {
                 Timestamp = timestamp,
                 Message = info
@@ -1021,8 +1021,8 @@ namespace QueryMaster.GameServer
         //Name<uid><wonid><team>
         private LogPlayerInfo GetPlayerInfo(string s)
         {
-            Match match = RegPlayer.Match(s);
-            LogPlayerInfo info = new LogPlayerInfo
+            var match = RegPlayer.Match(s);
+            var info = new LogPlayerInfo
             {
                 Name = match.Groups[1].Value,
                 Uid = match.Groups[2].Value,

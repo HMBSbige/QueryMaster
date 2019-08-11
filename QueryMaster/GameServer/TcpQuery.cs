@@ -51,8 +51,8 @@ namespace QueryMaster.GameServer
 
         internal List<byte[]> GetMultiPacketResponse(byte[] msg)
         {
-            List<byte[]> recvBytes = new List<byte[]>();
-            bool isRemaining = true;
+            var recvBytes = new List<byte[]>();
+            var isRemaining = true;
             byte[] recvData;
             SendData(msg);
             SendData(EmptyPkt);//Empty packet

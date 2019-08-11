@@ -48,12 +48,12 @@ namespace QueryMaster.GameServer
         internal string ChallengeId = string.Empty;
         internal static Rcon Authorize(ConnectionInfo conInfo, string pass)
         {
-            RconGoldSource Obj = new RconGoldSource(conInfo);
+            var Obj = new RconGoldSource(conInfo);
             Obj.ChallengeId = Obj.GetChallengeId();
             Obj.RConPass = pass;
             if (Obj != null)
             {
-                string reply = Obj.SendCommand("");
+                var reply = Obj.SendCommand("");
                 if (reply != null && !reply.Contains("Bad rcon_password"))
                     return Obj;
             }
@@ -70,8 +70,8 @@ namespace QueryMaster.GameServer
 
         private string sendCommand(string command, bool isMultiPacketresponse)
         {
-            byte[] rconMsg = Util.MergeByteArrays(RconQuery, Util.StringToBytes(ChallengeId), Util.StringToBytes(" \"" + RConPass + "\" " + command));
-            byte[] recvData = new byte[2000];
+            var rconMsg = Util.MergeByteArrays(RconQuery, Util.StringToBytes(ChallengeId), Util.StringToBytes(" \"" + RConPass + "\" " + command));
+            var recvData = new byte[2000];
             string s;
             if (string.IsNullOrEmpty(command))
                 recvData = socket.GetResponse(rconMsg, EngineType.GoldSource, isMultiPacketresponse);
@@ -94,11 +94,11 @@ namespace QueryMaster.GameServer
             return Invoke(() =>
                 {
                     byte[] recvData = null;
-                    string challengeId = string.Empty;
+                    var challengeId = string.Empty;
                     try
                     {
                         recvData = socket.GetResponse(RconChIdQuery, EngineType.GoldSource);
-                        Parser parser = new Parser(recvData);
+                        var parser = new Parser(recvData);
                         challengeId = parser.ReadString().Split(' ')[2].Trim();
                     }
                     catch (Exception e)

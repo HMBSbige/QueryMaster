@@ -43,15 +43,10 @@ namespace QueryMaster.JsonConverters
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            string value = reader.ReadAsString();
-            //if (value.AsEnumerable().Count(x => x == ':') > 1)
-            //{
-            //    string[] parts = value.Split(':');
-
-            //}
+            var value = reader.ReadAsString();
             if (objectType == typeof(QueryMasterCollection<IPEndPoint>))
             {
-                List<IPEndPoint> endPoints = new List<IPEndPoint>();
+                var endPoints = new List<IPEndPoint>();
                 while (Regex.Match(value, @"^(\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}):(\d{1,5})$").Success)
                 {
                     endPoints.Add(Util.ToIPEndPoint(value));
@@ -66,7 +61,7 @@ namespace QueryMaster.JsonConverters
             {
                 if (Regex.Match(value, @"^(\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}):(\d{1,5})$").Success)
                 {
-                    IPEndPoint endPoint = Util.ToIPEndPoint(value);
+                    var endPoint = Util.ToIPEndPoint(value);
                     return endPoint;
                 }
 
@@ -83,7 +78,7 @@ namespace QueryMaster.JsonConverters
             }
             else if (value.GetType() == typeof(IPEndPoint))
             {
-                IPEndPoint ip = (IPEndPoint)value;
+                var ip = (IPEndPoint)value;
                 writer.WriteValue(ip.ToString());
             }
 

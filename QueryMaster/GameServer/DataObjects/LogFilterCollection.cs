@@ -103,7 +103,7 @@ namespace QueryMaster.GameServer.DataObjects
         /// <returns></returns>
         public IEnumerator<LogFilter> GetEnumerator()
         {
-            foreach (LogFilter i in filterList)
+            foreach (var i in filterList)
             {
                 yield return i;
             }

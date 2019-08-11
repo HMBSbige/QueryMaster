@@ -40,9 +40,9 @@ namespace QueryMaster.JsonConverters
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            string value = reader.Value.ToString();
+            var value = reader.Value.ToString();
             double seconds = 0;
-            DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
             if (double.TryParse(value, out seconds))
             {
                 dateTime = dateTime.AddSeconds(seconds).ToLocalTime();
@@ -52,7 +52,7 @@ namespace QueryMaster.JsonConverters
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            DateTime dateTime = (DateTime)value;
+            var dateTime = (DateTime)value;
             writer.WriteValue(dateTime.ToString());
         }
     }

@@ -44,7 +44,7 @@ namespace QueryMaster.Steam.Interfaces
         /// <returns>Instance of <see cref="GetServerInfoResponse"/>.</returns>
         public GetServerInfoResponse GetServerInfo()
         {
-            SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetServerInfo", Version = 1 };
+            var url = new SteamUrl { Interface = Interface, Method = "GetServerInfo", Version = 1 };
             return GetParsedResponse<GetServerInfoResponse>(url, true);
         }
         /// <summary>
@@ -54,7 +54,7 @@ namespace QueryMaster.Steam.Interfaces
         /// <returns>Instance of <see cref="GetSupportedAPIListResponse"/>.</returns>
         public GetSupportedAPIListResponse GetSupportedAPIList(bool appendKey = false)
         {
-            SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetSupportedAPIList", Version = 1, AppendKey = appendKey };
+            var url = new SteamUrl { Interface = Interface, Method = "GetSupportedAPIList", Version = 1, AppendKey = appendKey };
             return GetParsedResponse<GetSupportedAPIListResponse>(url);
         }
 

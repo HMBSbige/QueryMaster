@@ -51,7 +51,7 @@ namespace QueryMaster.Steam.Interfaces
         /// <returns>Instance of <see cref="GetGroupDetailsResponse"/>.</returns>
         public GetGroupDetailsResponse GetGroupDetails(string groupName, int pageNum = 1)
         {
-            string url = string.Format(CultureInfo.InvariantCulture, @"http://steamcommunity.com/groups/{0}/memberslistxml/?xml=1&p={1}", groupName, pageNum);
+            var url = string.Format(CultureInfo.InvariantCulture, @"http://steamcommunity.com/groups/{0}/memberslistxml/?xml=1&p={1}", groupName, pageNum);
             return GetGroupDetails(url);
         }
         /// <summary>
@@ -62,12 +62,12 @@ namespace QueryMaster.Steam.Interfaces
         /// <returns>Instance of <see cref="GetGroupDetailsResponse"/>.</returns>
         public GetGroupDetailsResponse GetGroupDetails(ulong gId, int pageNum = 1)
         {
-            string url = string.Format(CultureInfo.InvariantCulture, @"http://steamcommunity.com/gid/{0}/memberslistxml/?xml=1&p={1}", gId, pageNum);
+            var url = string.Format(CultureInfo.InvariantCulture, @"http://steamcommunity.com/gid/{0}/memberslistxml/?xml=1&p={1}", gId, pageNum);
             return GetGroupDetails(url);
         }
         private GetGroupDetailsResponse GetGroupDetails(string url)
         {
-            string reply = new SteamSocket().GetResponse(url);
+            var reply = new SteamSocket().GetResponse(url);
             doc.LoadXml(reply);
             doc.RemoveChild(doc.FirstChild);
             RemoveCData("memberList/groupDetails/groupName");
@@ -80,8 +80,8 @@ namespace QueryMaster.Steam.Interfaces
             doc.SelectSingleNode("memberList").RemoveChild(doc.SelectSingleNode("memberList/memberCount"));
             doc.SelectSingleNode("memberList").InnerXml += doc.SelectSingleNode("memberList/members").InnerXml;
             doc.SelectSingleNode("memberList").RemoveChild(doc.SelectSingleNode("memberList/members"));
-            string jsonString = JsonConvert.SerializeXmlNode(doc);
-            GetGroupDetailsResponse response = ParseResponse<GetGroupDetailsResponse>(jsonString);
+            var jsonString = JsonConvert.SerializeXmlNode(doc);
+            var response = ParseResponse<GetGroupDetailsResponse>(jsonString);
             response.ReceivedResponse = reply;
             return response;
         }

@@ -37,8 +37,8 @@ namespace QueryMaster.ContractSolver
     {
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {
-            IList<JsonProperty> properties = base.CreateProperties(type, memberSerialization);
-            foreach (JsonProperty property in properties)
+            var properties = base.CreateProperties(type, memberSerialization);
+            foreach (var property in properties)
             {
                 property.PropertyName = property.UnderlyingName;
             }

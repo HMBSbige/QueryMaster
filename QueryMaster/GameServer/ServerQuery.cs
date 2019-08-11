@@ -50,7 +50,7 @@ namespace QueryMaster.GameServer
         /// <returns>Instance of server class that represents the connected server.</returns>
         public static Server GetServerInstance(EngineType type, string ip, ushort port, bool? isObsolete = false, int sendTimeout = 3000, int receiveTimeout = 3000, int retries = 3, bool throwExceptions = false)
         {
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ip), port);
+            var endPoint = new IPEndPoint(IPAddress.Parse(ip), port);
             return GetServerInstance(type, endPoint, isObsolete, sendTimeout, receiveTimeout, retries, throwExceptions);
         }
 
@@ -67,8 +67,8 @@ namespace QueryMaster.GameServer
         /// <returns>Instance of server class that represents the connected server</returns>
         public static Server GetServerInstance(EngineType type, IPEndPoint endPoint, bool? isObsolete = false, int sendTimeout = 3000, int receiveTimeout = 3000, int retries = 3, bool throwExceptions = false)
         {
-            Server server = null;
-            ConnectionInfo conInfo = new ConnectionInfo
+            Server server;
+            var conInfo = new ConnectionInfo
             {
                 SendTimeout = sendTimeout,
                 ReceiveTimeout = receiveTimeout,
@@ -98,9 +98,12 @@ namespace QueryMaster.GameServer
         /// <returns>Instance of server class that represents the connected server</returns>
         public static Server GetServerInstance(Game game, IPEndPoint endPoint, bool? isObsolete = false, int sendTimeout = 3000, int receiveTimeout = 3000, int retries = 3, bool throwExceptions = false)
         {
+            var type = EngineType.Source;
             if ((int)game <= 130)
-                return GetServerInstance(EngineType.GoldSource, endPoint, isObsolete, sendTimeout, receiveTimeout, retries, throwExceptions);
-            return GetServerInstance(EngineType.Source, endPoint, isObsolete, sendTimeout, receiveTimeout, retries, throwExceptions);
+            {
+                type = EngineType.GoldSource;
+            }
+            return GetServerInstance(type, endPoint, isObsolete, sendTimeout, receiveTimeout, retries, throwExceptions);
         }
 
         /// <summary>
@@ -117,11 +120,13 @@ namespace QueryMaster.GameServer
         /// <returns>Instance of server class that represents the connected server</returns>
         public static Server GetServerInstance(Game game, string ip, ushort port, bool? isObsolete = false, int sendTimeout = 3000, int receiveTimeout = 3000, int retries = 3, bool throwExceptions = false)
         {
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(ip), port);
+            var endPoint = new IPEndPoint(IPAddress.Parse(ip), port);
+            var type = EngineType.Source;
             if ((int)game <= 130)
-                return GetServerInstance(EngineType.GoldSource, endPoint, isObsolete, sendTimeout, receiveTimeout, retries, throwExceptions);
-            return GetServerInstance(EngineType.Source, endPoint, isObsolete, sendTimeout, receiveTimeout, retries, throwExceptions);
+            {
+                type = EngineType.GoldSource;
+            }
+            return GetServerInstance(type, endPoint, isObsolete, sendTimeout, receiveTimeout, retries, throwExceptions);
         }
-
     }
 }

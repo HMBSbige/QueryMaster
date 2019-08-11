@@ -47,7 +47,7 @@ namespace QueryMaster.Steam.Interfaces
         /// <returns>Instance of <see cref="GetAppListResponse"/>.</returns>
         public GetAppListResponse GetAppList()
         {
-            SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetAppList", Version = 2 };
+            var url = new SteamUrl { Interface = Interface, Method = "GetAppList", Version = 2 };
             return GetParsedResponse<GetAppListResponse>(url);
         }
         /// <summary>
@@ -57,7 +57,7 @@ namespace QueryMaster.Steam.Interfaces
         /// <returns>Instance of <see cref="GetServersAtAddressResponse"/>.</returns>
         public GetServersAtAddressResponse GetServersAtAddress(IPEndPoint ipEndPoint)
         {
-            SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetServersAtAddress", Version = 1 };
+            var url = new SteamUrl { Interface = Interface, Method = "GetServersAtAddress", Version = 1 };
             url.Parameters.Add(new Parameter { Name = "addr", Value = ipEndPoint.ToString() });
             return GetParsedResponse<GetServersAtAddressResponse>(url);
         }
@@ -69,7 +69,7 @@ namespace QueryMaster.Steam.Interfaces
         /// <returns>Instance of <see cref="UpToDateCheckResponse"/>.</returns>
         public UpToDateCheckResponse UpToDateCheck(uint appId, uint version)
         {
-            SteamUrl url = new SteamUrl { Interface = Interface, Method = "UpToDateCheck", Version = 1 };
+            var url = new SteamUrl { Interface = Interface, Method = "UpToDateCheck", Version = 1 };
             url.Parameters.Add(new Parameter { Name = "appid", Value = appId.ToString(CultureInfo.InvariantCulture) });
             url.Parameters.Add(new Parameter { Name = "version", Value = version.ToString(CultureInfo.InvariantCulture) });
             return GetParsedResponse<UpToDateCheckResponse>(url);

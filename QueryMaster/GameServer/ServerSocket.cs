@@ -60,8 +60,8 @@ namespace QueryMaster.GameServer
             Socket.SendTimeout = conInfo.SendTimeout;
             Socket.ReceiveTimeout = conInfo.ReceiveTimeout;
             Address = conInfo.EndPoint;
-            IAsyncResult result = Socket.BeginConnect(Address, null, null);
-            bool success = result.AsyncWaitHandle.WaitOne(conInfo.ReceiveTimeout, true);
+            var result = Socket.BeginConnect(Address, null, null);
+            var success = result.AsyncWaitHandle.WaitOne(conInfo.ReceiveTimeout, true);
             if (!success)
                 throw new SocketException((int)SocketError.TimedOut);
             IsDisposed = false;
@@ -77,8 +77,8 @@ namespace QueryMaster.GameServer
         internal byte[] ReceiveData()
         {
             ThrowIfDisposed();
-            byte[] recvData = new byte[BufferSize];
-            int recv = 0;
+            var recvData = new byte[BufferSize];
+            var recv = 0;
             lock (LockObj)
                 recv = Socket.Receive(recvData);
             return recvData.Take(recv).ToArray();

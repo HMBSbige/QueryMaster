@@ -55,15 +55,14 @@ namespace QueryMaster.MasterServer
         /// <returns>Master server instance</returns>
         public static Server GetServerInstance(IPEndPoint endPoint, int sendTimeout = 3000, int receiveTimeout = 3000, int retries = 3, AttemptCallback attemptCallback = null)
         {
-            Server server = null;
-            ConnectionInfo conInfo = new ConnectionInfo
+            var conInfo = new ConnectionInfo
             {
                 SendTimeout = sendTimeout,
                 ReceiveTimeout = receiveTimeout,
                 Retries = retries,
                 EndPoint = endPoint
             };
-            server = new Server(conInfo, attemptCallback);
+            var server = new Server(conInfo, attemptCallback);
             return server;
         }
     }

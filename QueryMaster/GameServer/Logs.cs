@@ -114,7 +114,7 @@ namespace QueryMaster.GameServer
         public LogEvents GetEventsInstance()
         {
             ThrowIfDisposed();
-            LogEvents eventObj = new LogEvents(ServerEndPoint);
+            var eventObj = new LogEvents(ServerEndPoint);
             EventsInstanceList.Add(eventObj);
             return eventObj;
         }
@@ -127,7 +127,7 @@ namespace QueryMaster.GameServer
                 {
                     if (UdpSocket != null)
                         UdpSocket.Close();
-                    foreach (LogEvents i in EventsInstanceList)
+                    foreach (var i in EventsInstanceList)
                     {
                         i.Dispose();
                     }
@@ -139,7 +139,7 @@ namespace QueryMaster.GameServer
 
         private void Recv(IAsyncResult res)
         {
-            int bytesRecv = 0;
+            var bytesRecv = 0;
             try
             {
                 bytesRecv = UdpSocket.EndReceive(res);
@@ -150,10 +150,10 @@ namespace QueryMaster.GameServer
             }
             if (bytesRecv > HeaderSize)
             {
-                string logLine = Encoding.UTF8.GetString(recvData, HeaderSize, bytesRecv - HeaderSize);
+                var logLine = Encoding.UTF8.GetString(recvData, HeaderSize, bytesRecv - HeaderSize);
                 if (Callback != null)
                     Callback(string.Copy(logLine));
-                foreach (LogEvents i in EventsInstanceList)
+                foreach (var i in EventsInstanceList)
                 {
                     i.ProcessLog(string.Copy(logLine));
                 }

@@ -37,10 +37,10 @@ namespace QueryMaster.Steam
         {
             if (string.IsNullOrEmpty(postData))
             {
-                string responseStr = string.Empty;
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                var responseStr = string.Empty;
+                var request = (HttpWebRequest)WebRequest.Create(url);
+                using (var response = (HttpWebResponse)request.GetResponse())
+                using (var reader = new StreamReader(response.GetResponseStream()))
                 {
                     responseStr = reader.ReadToEnd();
                 }
@@ -48,16 +48,16 @@ namespace QueryMaster.Steam
             }
             else
             {
-                string responseStr = string.Empty;
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                var responseStr = string.Empty;
+                var request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "POST";
                 request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
-                using (StreamWriter writer = new StreamWriter(request.GetRequestStream()))
+                using (var writer = new StreamWriter(request.GetRequestStream()))
                 {
                     writer.Write(postData);
                 }
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                using (var response = (HttpWebResponse)request.GetResponse())
+                using (var reader = new StreamReader(response.GetResponseStream()))
                 {
                     responseStr = reader.ReadToEnd();
                 }

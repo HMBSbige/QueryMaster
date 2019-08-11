@@ -52,7 +52,7 @@ namespace QueryMaster.Steam.Interfaces
         /// <remarks>Returns the list of friends if the profile is public or there are entries for the given relationship.</remarks>
         public GetFriendListResponse GetFriendList(ulong steamId, GetFriendListRelationship relationship = GetFriendListRelationship.All)
         {
-            SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetFriendList", Version = 1, AppendKey = true };
+            var url = new SteamUrl { Interface = Interface, Method = "GetFriendList", Version = 1, AppendKey = true };
             url.Parameters.Add(new Parameter { Name = "steamid", Value = steamId.ToString(CultureInfo.InvariantCulture) });
             url.Parameters.Add(new Parameter { Name = "relationship", Value = relationship.ToString() });
             return GetParsedResponse<GetFriendListResponse>(url);
@@ -67,7 +67,7 @@ namespace QueryMaster.Steam.Interfaces
         {
             if (steamIds.Length == 0)
                 throw new SteamException("Please pass 64-bit steamid(s)");
-            SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetPlayerBans", Version = 1, AppendKey = true };
+            var url = new SteamUrl { Interface = Interface, Method = "GetPlayerBans", Version = 1, AppendKey = true };
             url.Parameters.Add(new Parameter { Name = "steamids", Value = string.Join(",", steamIds) });
             return GetParsedResponse<GetPlayerBansResponse>(url, true);
 
@@ -81,7 +81,7 @@ namespace QueryMaster.Steam.Interfaces
         {
             if (steamIds.Length == 0)
                 throw new SteamException("Please pass 64-bit steamid(s)");
-            SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetPlayerSummaries", Version = 2, AppendKey = true };
+            var url = new SteamUrl { Interface = Interface, Method = "GetPlayerSummaries", Version = 2, AppendKey = true };
             url.Parameters.Add(new Parameter { Name = "steamids", Value = string.Join(",", steamIds) });
             return GetParsedResponse<GetPlayerSummariesResponse>(url, jsonConverters: new JsonConverter[] { new StringIpEndPointConverter(), new IntegerUnixTimeStampConverter() });
         }
@@ -92,7 +92,7 @@ namespace QueryMaster.Steam.Interfaces
         /// <returns>Instance of <see cref="GetUserGroupListResponse"/>.</returns>
         public GetUserGroupListResponse GetUserGroupList(ulong steamId)
         {
-            SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetUserGroupList", Version = 1, AppendKey = true };
+            var url = new SteamUrl { Interface = Interface, Method = "GetUserGroupList", Version = 1, AppendKey = true };
             url.Parameters.Add(new Parameter { Name = "steamid", Value = steamId.ToString(CultureInfo.InvariantCulture) });
             return GetParsedResponse<GetUserGroupListResponse>(url);
         }
@@ -103,7 +103,7 @@ namespace QueryMaster.Steam.Interfaces
         /// <returns>Instance of <see cref="ResolveVanityURLResponse"/>.</returns>
         public ResolveVanityURLResponse ResolveVanityURL(string vanityUrl)
         {
-            SteamUrl url = new SteamUrl { Interface = Interface, Method = "ResolveVanityURL", Version = 1, AppendKey = true };
+            var url = new SteamUrl { Interface = Interface, Method = "ResolveVanityURL", Version = 1, AppendKey = true };
             url.Parameters.Add(new Parameter { Name = "vanityurl", Value = vanityUrl });
             return GetParsedResponse<ResolveVanityURLResponse>(url);
         }

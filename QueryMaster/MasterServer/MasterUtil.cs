@@ -35,12 +35,12 @@ using System.Text;
 
 namespace QueryMaster.MasterServer
 {
-    static class MasterUtil
+    public static class MasterUtil
     {
         private static readonly byte Header = 0x31;
         internal static byte[] BuildPacket(string endPoint, Region region, IpFilter filter)
         {
-            List<byte> msg = new List<byte>();
+            var msg = new List<byte>();
             msg.Add(Header);
             msg.Add((byte)region);
             msg.AddRange(Util.StringToBytes(endPoint));
@@ -52,17 +52,16 @@ namespace QueryMaster.MasterServer
         }
         internal static List<IPEndPoint> ProcessPacket(byte[] packet)
         {
-            Parser parser = new Parser(packet);
-            List<IPEndPoint> endPoints = new List<IPEndPoint>();
+            var parser = new Parser(packet);
+            var endPoints = new List<IPEndPoint>();
             parser.SkipBytes(6);
-            int counter = 6;
-            string ip = string.Empty; ;
-            int port = 0;
+            var counter = 6;
             while (counter != packet.Length)
             {
-                ip = parser.ReadByte() + "." + parser.ReadByte() + "." + parser.ReadByte() + "." + parser.ReadByte();
-                byte portByte1 = parser.ReadByte();
-                byte portByte2 = parser.ReadByte();
+                var ip = parser.ReadByte() + "." + parser.ReadByte() + "." + parser.ReadByte() + "." + parser.ReadByte();
+                var portByte1 = parser.ReadByte();
+                var portByte2 = parser.ReadByte();
+                int port;
                 if (BitConverter.IsLittleEndian)
                 {
                     port = BitConverter.ToUInt16(new[] { portByte2, portByte1 }, 0);
@@ -78,9 +77,9 @@ namespace QueryMaster.MasterServer
 
         }
 
-        internal static string ProcessFilter(IpFilter filter, bool isSubFilter = false)
+        public static string ProcessFilter(IpFilter filter, bool isSubFilter = false)
         {
-            StringBuilder filterStr = new StringBuilder();
+            var filterStr = new StringBuilder();
             if (filter.IsDedicated)
                 filterStr.Append(@"\type\d");
             if (filter.IsSecure)
@@ -131,19 +130,18 @@ namespace QueryMaster.MasterServer
             }
             if (!isSubFilter)
             {
-                string[] Parts = null;
                 string norStr = string.Empty, nandStr = string.Empty;
-                Parts = filterStr.ToString().Split('\0');
-                filterStr = new StringBuilder(Parts[0]);
-                for (int i = 1; i < Parts.Length; i++)
+                var parts = filterStr.ToString().Split('\0');
+                filterStr = new StringBuilder(parts[0]);
+                for (var i = 1; i < parts.Length; i++)
                 {
-                    if (Parts[i].StartsWith("nor", StringComparison.OrdinalIgnoreCase))
+                    if (parts[i].StartsWith("nor", StringComparison.OrdinalIgnoreCase))
                     {
-                        norStr += Parts[i].Substring(3);
+                        norStr += parts[i].Substring(3);
                     }
-                    if (Parts[i].StartsWith("nand", StringComparison.OrdinalIgnoreCase))
+                    if (parts[i].StartsWith("nand", StringComparison.OrdinalIgnoreCase))
                     {
-                        nandStr += Parts[i].Substring(4);
+                        nandStr += parts[i].Substring(4);
                     }
                 }
                 if (!string.IsNullOrEmpty(norStr))

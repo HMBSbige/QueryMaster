@@ -51,7 +51,7 @@ namespace QueryMaster.Steam.Interfaces
         /// <returns>Instance of <see cref="GetNewsForAppResponse"/>.</returns>
         public GetNewsForAppResponse GetNewsForApp(uint appId, uint? maxLength = null, uint? endDate = null, uint? count = null, string feeds = null)
         {
-            SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetNewsForApp", Version = 2 };
+            var url = new SteamUrl { Interface = Interface, Method = "GetNewsForApp", Version = 2 };
             url.Parameters.Add(new Parameter { Name = "appid", Value = appId.ToString(CultureInfo.InvariantCulture) });
             if (maxLength != null)
                 url.Parameters.Add(new Parameter { Name = "maxlength", Value = maxLength.ToString() });

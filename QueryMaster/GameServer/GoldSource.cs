@@ -33,7 +33,7 @@ namespace QueryMaster.GameServer
         public override bool GetControl(string pass)
         {
             ThrowIfDisposed();
-            bool isSuccess = false;
+            var isSuccess = false;
             Rcon = RconGoldSource.Authorize(ConInfo, pass);
             if (Rcon != null)
                 isSuccess = true;

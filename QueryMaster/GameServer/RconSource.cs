@@ -48,10 +48,10 @@ namespace QueryMaster.GameServer
 
             return new QueryMasterBase().Invoke<Rcon>(() =>
                 {
-                    RconSource obj = new RconSource(conInfo);
+                    var obj = new RconSource(conInfo);
                     obj.socket = new TcpQuery(conInfo);
-                    byte[] recvData = new byte[50];
-                    RconSrcPacket packet = new RconSrcPacket { Body = msg, Id = (int)PacketId.ExecCmd, Type = (int)PacketType.Auth };
+                    var recvData = new byte[50];
+                    var packet = new RconSrcPacket { Body = msg, Id = (int)PacketId.ExecCmd, Type = (int)PacketType.Auth };
                     recvData = obj.socket.GetResponse(RconUtil.GetBytes(packet));
                     int header;
                     try
@@ -79,12 +79,12 @@ namespace QueryMaster.GameServer
 
         private string sendCommand(string command, bool isMultipacketResponse)
         {
-            RconSrcPacket senPacket = new RconSrcPacket { Body = command, Id = (int)PacketId.ExecCmd, Type = (int)PacketType.Exec };
-            List<byte[]> recvData = socket.GetMultiPacketResponse(RconUtil.GetBytes(senPacket));
-            StringBuilder str = new StringBuilder();
+            var senPacket = new RconSrcPacket { Body = command, Id = (int)PacketId.ExecCmd, Type = (int)PacketType.Exec };
+            var recvData = socket.GetMultiPacketResponse(RconUtil.GetBytes(senPacket));
+            var str = new StringBuilder();
             try
             {
-                for (int i = 0; i < recvData.Count; i++)
+                for (var i = 0; i < recvData.Count; i++)
                 {
                     //consecutive rcon command replies start with an empty packet 
                     if (BitConverter.ToInt32(recvData[i], 4) == (int)PacketId.Empty)

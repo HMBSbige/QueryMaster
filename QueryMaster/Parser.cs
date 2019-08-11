@@ -77,7 +77,7 @@ namespace QueryMaster
 
         internal int ReadInt()
         {
-            int num = 0;
+            var num = 0;
 
             CurrentPosition++;
             if (CurrentPosition + 3 > LastPosition)
@@ -128,8 +128,8 @@ namespace QueryMaster
 
         internal string ReadString()
         {
-            string str = string.Empty;
-            int temp = 0;
+            var str = string.Empty;
+            var temp = 0;
 
             CurrentPosition++;
             temp = CurrentPosition;

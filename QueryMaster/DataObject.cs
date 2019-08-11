@@ -46,7 +46,7 @@ namespace QueryMaster
         /// <returns>Json string.</returns>
         public override string ToString()
         {
-            JsonSerializerSettings settings = new JsonSerializerSettings
+            var settings = new JsonSerializerSettings
             {
                 ContractResolver = new OriginalNameContractResolver(),
                 Formatting = Formatting.Indented

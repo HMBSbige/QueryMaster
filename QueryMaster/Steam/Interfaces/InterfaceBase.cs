@@ -43,21 +43,21 @@ namespace QueryMaster.Steam.Interfaces
         internal string Interface { get; set; }
         internal T GetParsedResponse<T>(SteamUrl url, bool AddRootObject = false, params JsonConverter[] jsonConverters) where T : SteamResponse, new()
         {
-            string reply = GetResponse(url);
-            T response = ParseResponse<T>(reply, AddRootObject, jsonConverters);
+            var reply = GetResponse(url);
+            var response = ParseResponse<T>(reply, AddRootObject, jsonConverters);
             response.RequestUrl = url;
             return response;
         }
 
         internal T ParseResponse<T>(string reply, bool AddRootObject = false, params JsonConverter[] jsonConverters) where T : SteamResponse, new()
         {
-            string jsonString = string.Empty;
+            var jsonString = string.Empty;
             T response = null;
             try
             {
                 if (AddRootObject)
                 {
-                    JObject rootObject = new JObject();
+                    var rootObject = new JObject();
                     rootObject.Add("RootObject", JToken.Parse(reply));
                     jsonString = rootObject.ToString();
                 }
@@ -70,7 +70,6 @@ namespace QueryMaster.Steam.Interfaces
             catch (JsonSerializationException)
             {
                 response = new T { IsSuccess = false };
-
             }
             finally
             {
