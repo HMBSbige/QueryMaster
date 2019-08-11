@@ -25,20 +25,19 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
 
-namespace QueryMaster.Steam
+using Newtonsoft.Json;
+using QueryMaster.JsonConverters;
+using System;
+using System.Net;
+
+namespace QueryMaster.Steam.DataObjects.ISteamApps
 {
     /// <summary>
     /// Contains response of GetServersAtAddress method.
     /// </summary>
     [Serializable]
-   public class GetServersAtAddressResponse : SteamResponse
+    public class GetServersAtAddressResponse : SteamResponse
     {
         /// <summary>
         /// Parsed response.

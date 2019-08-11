@@ -25,13 +25,11 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster
+namespace QueryMaster.JsonConverters
 {
     class IntegerTimeSpanConverter : JsonConverter
     {
@@ -45,7 +43,7 @@ namespace QueryMaster
             string value = reader.Value.ToString();
             double minutes = 0;
             TimeSpan timeSpan = TimeSpan.Zero;
-            if (Double.TryParse(value, out minutes))
+            if (double.TryParse(value, out minutes))
             {
                 timeSpan = TimeSpan.FromMinutes(minutes);
             }

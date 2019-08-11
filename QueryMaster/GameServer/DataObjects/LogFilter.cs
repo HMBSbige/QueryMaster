@@ -25,13 +25,10 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using System.Text.RegularExpressions;
 
-namespace QueryMaster.GameServer
+namespace QueryMaster.GameServer.DataObjects
 {
     /// <summary>
     /// Represents log filter.
@@ -41,25 +38,25 @@ namespace QueryMaster.GameServer
         /// <summary>
         /// Regex instance.
         /// </summary>
-       protected internal Regex RegexInstance { get; set; }
+        protected internal Regex RegexInstance { get; set; }
         /// <summary>
         /// used to store the regex pattern.
         /// </summary>
-       protected internal string FilterString { get; set; }
+        protected internal string FilterString { get; set; }
         /// <summary>
-       /// Gets or sets a value indicating whether the filter is enabled.
+        /// Gets or sets a value indicating whether the filter is enabled.
         /// </summary>
-       public bool Enabled { get; set; }
+        public bool Enabled { get; set; }
         /// <summary>
-       /// Gets or sets <see cref="LogFilterAction"/>
+        /// Gets or sets <see cref="LogFilterAction"/>
         /// </summary>
-       public LogFilterAction Action { get; set; }
+        public LogFilterAction Action { get; set; }
 
-       internal LogFilter()
-       {
-           Enabled = true;
-           Action = LogFilterAction.Allow;
-       }
+        internal LogFilter()
+        {
+            Enabled = true;
+            Action = LogFilterAction.Allow;
+        }
 
     }
 }

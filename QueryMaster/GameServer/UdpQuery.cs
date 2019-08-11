@@ -25,6 +25,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using ICSharpCode.SharpZipLib.BZip2;
 using ICSharpCode.SharpZipLib.Checksum;
 using System;
@@ -70,11 +71,9 @@ namespace QueryMaster.GameServer
                             recvData = data.ToArray();
                             break;
                         }
-                        else
-                        {
-                            Dispose();
-                            throw;
-                        }
+
+                        Dispose();
+                        throw;
                     }
                 }
             }
@@ -195,7 +194,7 @@ namespace QueryMaster.GameServer
                     throw new InvalidPacketException("packet's checksum value does not match with the calculated checksum");
             }
 
-            return recvData.Skip(4).ToArray<byte>();
+            return recvData.Skip(4).ToArray();
         }
 
         private byte[] Decompress(byte[] data)

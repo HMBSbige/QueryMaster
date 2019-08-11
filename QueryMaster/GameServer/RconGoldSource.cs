@@ -25,23 +25,20 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
-using QueryMaster;
+
 namespace QueryMaster.GameServer
 {
-   internal class RconGoldSource : Rcon
+    internal class RconGoldSource : Rcon
     {
         internal static readonly byte[] RconChIdQuery = { 0xFF, 0xFF, 0xFF, 0xFF, 0x63, 0x68, 0x61, 0x6c, 0x6c, 0x65, 0x6e, 0x67, 0x65, 0x20, 0x72, 0x63, 0x6f, 0x6e };
 
         internal static readonly byte[] RconQuery = { 0xFF, 0xFF, 0xFF, 0xFF, 0x72, 0x63, 0x6f, 0x6e, 0x20 };//+<challenge id>+"<rcon password>"+<value>
 
-       internal string RConPass = string.Empty;
-       internal UdpQuery socket;
-       private ConnectionInfo ConInfo;
+        internal string RConPass = string.Empty;
+        internal UdpQuery socket;
+        private ConnectionInfo ConInfo;
         private RconGoldSource(ConnectionInfo conInfo)
         {
             socket = new UdpQuery(conInfo);
@@ -54,29 +51,29 @@ namespace QueryMaster.GameServer
             RconGoldSource Obj = new RconGoldSource(conInfo);
             Obj.ChallengeId = Obj.GetChallengeId();
             Obj.RConPass = pass;
-            if (Obj !=null)
+            if (Obj != null)
             {
                 string reply = Obj.SendCommand("");
-                if (reply!=null && !reply.Contains("Bad rcon_password"))
-                return Obj;
+                if (reply != null && !reply.Contains("Bad rcon_password"))
+                    return Obj;
             }
             Obj.Dispose();
             return null;
         }
 
 
-        public override string SendCommand(string command,bool isMultiPacketresponse=false)
+        public override string SendCommand(string command, bool isMultiPacketresponse = false)
         {
             ThrowIfDisposed();
-            return Invoke<string>(() => sendCommand(command, isMultiPacketresponse),1, null, ConInfo.ThrowExceptions);
+            return Invoke(() => sendCommand(command, isMultiPacketresponse), 1, null, ConInfo.ThrowExceptions);
         }
 
-       private string sendCommand(string command,bool isMultiPacketresponse)
+        private string sendCommand(string command, bool isMultiPacketresponse)
         {
             byte[] rconMsg = Util.MergeByteArrays(RconQuery, Util.StringToBytes(ChallengeId), Util.StringToBytes(" \"" + RConPass + "\" " + command));
             byte[] recvData = new byte[2000];
             string s;
-            if (String.IsNullOrEmpty(command))
+            if (string.IsNullOrEmpty(command))
                 recvData = socket.GetResponse(rconMsg, EngineType.GoldSource, isMultiPacketresponse);
             else
                 recvData = socket.GetResponse(rconMsg, EngineType.GoldSource, isMultiPacketresponse);
@@ -94,7 +91,7 @@ namespace QueryMaster.GameServer
 
         private string GetChallengeId()
         {
-            return Invoke<string>(() =>
+            return Invoke(() =>
                 {
                     byte[] recvData = null;
                     string challengeId = string.Empty;
@@ -110,7 +107,7 @@ namespace QueryMaster.GameServer
                         throw;
                     }
                     return challengeId;
-                }, ConInfo.Retries+1, null, ConInfo.ThrowExceptions);
+                }, ConInfo.Retries + 1, null, ConInfo.ThrowExceptions);
         }
 
         public override void AddlogAddress(string ip, ushort port)

@@ -25,13 +25,11 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster.Steam
+namespace QueryMaster.Steam.DataObjects.ISteamApps
 {
     /// <summary>
     /// Contains response of UpToDateCheck method.
@@ -42,7 +40,7 @@ namespace QueryMaster.Steam
         /// <summary>
         /// Parsed response.
         /// </summary>
-       [JsonProperty("response")]
+        [JsonProperty("response")]
         public UpToDateCheckResponseResponse ParsedResponse { get; internal set; }
     }
 

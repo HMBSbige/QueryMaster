@@ -1,5 +1,4 @@
-﻿
-#region License
+﻿#region License
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -25,48 +24,43 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster.Steam
+namespace QueryMaster.Steam.DataObjects
 {
     /// <summary>
     /// Base of all Steam web api method responses.
     /// </summary>
-   public class SteamResponse : DataObject
+    public class SteamResponse : DataObject
     {
-       /// <summary>
-       /// Request Url.
-       /// </summary>
-       public SteamUrl RequestUrl { get; set; }
-       /// <summary>
-       /// true if parsing was successful; otherwise, false.
-       /// </summary>
-       public bool IsSuccess { get; internal set; }
-       internal string ReceivedResponse { get; set; }
-       internal Format ReceivedFormat = Format.Json;
-       internal SteamSocket Socket = null;
-       /// <summary>
-       /// Gets response in json/xml/vdf format.
-       /// </summary>
-       /// <param name="format"></param>
-       /// <returns></returns>
-       public virtual string GetRawResponse(Format format)
-       {
-           if (Socket == null)
-               Socket = new SteamSocket();
-           string response=string.Empty;
-           if (format == ReceivedFormat)
-               response = ReceivedResponse;
-           else
-           {
-               RequestUrl.Format = format;
-               response = Socket.GetResponse(RequestUrl.ToString());
-           }
-           return response;
-       }
+        /// <summary>
+        /// Request Url.
+        /// </summary>
+        public SteamUrl RequestUrl { get; set; }
+        /// <summary>
+        /// true if parsing was successful; otherwise, false.
+        /// </summary>
+        public bool IsSuccess { get; internal set; }
+        internal string ReceivedResponse { get; set; }
+        internal Format ReceivedFormat = Format.Json;
+        internal SteamSocket Socket;
+        /// <summary>
+        /// Gets response in json/xml/vdf format.
+        /// </summary>
+        /// <param name="format"></param>
+        /// <returns></returns>
+        public virtual string GetRawResponse(Format format)
+        {
+            if (Socket == null)
+                Socket = new SteamSocket();
+            string response = string.Empty;
+            if (format == ReceivedFormat)
+                response = ReceivedResponse;
+            else
+            {
+                RequestUrl.Format = format;
+                response = Socket.GetResponse(RequestUrl.ToString());
+            }
+            return response;
+        }
     }
 }

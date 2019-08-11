@@ -25,11 +25,8 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
-using System;
-using System.Collections.Generic;
+
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster
 {
@@ -339,6 +336,6 @@ namespace QueryMaster
         /// Rising Storm/Red Orchestra 2 Multiplayer
         /// </summary>
         [Description("Rising Storm/Red Orchestra 2 Multiplayer")]
-        Red_Orchestra_2 = 35450,
+        Red_Orchestra_2 = 35450
     }
 }

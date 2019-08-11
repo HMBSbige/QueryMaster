@@ -25,13 +25,13 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
+
 namespace QueryMaster.Utils
 {
     /// <summary>
@@ -81,7 +81,7 @@ namespace QueryMaster.Utils
             if (Enum.IsDefined(typeof(AccountType), accountType))
                 AccountType = accountType;
             else
-               AccountType = AccountType.Invalid;
+                AccountType = AccountType.Invalid;
 
             if (Enum.IsDefined(typeof(Universe), Universe))
                 Universe = universe;
@@ -105,12 +105,12 @@ namespace QueryMaster.Utils
             Match match = null;
             if ((match = LegacyRegex.Match(id)).Success)
             {
-                steamId.Universe = (Universe)Int32.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
+                steamId.Universe = (Universe)int.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
                 if (!Enum.IsDefined(typeof(Universe), steamId.Universe))
                     steamId.Universe = Universe.Invalid;
                 if (steamId.Universe == Universe.Invalid)
                     steamId.Universe = Universe.Public;
-                uint accountID = UInt32.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
+                uint accountID = uint.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
                 steamId.AccountId = match.Groups[2].Value == "0" ? (accountID << 1) : ((accountID << 1) + 1);
                 steamId.Instance = Instance.Desktop;
                 steamId.AccountType = AccountType.Individual;
@@ -139,21 +139,21 @@ namespace QueryMaster.Utils
             if ((match = SteamId3Regex.Match(id)).Success)
             {
                 steamId.AccountType = AccountTypeMapper.Instance[match.Groups[1].Value[0]];
-                steamId.Universe = (Universe)Int32.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture);
+                steamId.Universe = (Universe)int.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture);
                 if (!Enum.IsDefined(typeof(Universe), steamId.Universe))
                     steamId.Universe = Universe.Invalid;
-                steamId.AccountId = UInt32.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
-                if (!String.IsNullOrEmpty(match.Groups[5].Value))
+                steamId.AccountId = uint.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
+                if (!string.IsNullOrEmpty(match.Groups[5].Value))
                 {
-                    steamId.Instance = (Instance)Int32.Parse(match.Groups[5].Value, CultureInfo.InvariantCulture);
+                    steamId.Instance = (Instance)int.Parse(match.Groups[5].Value, CultureInfo.InvariantCulture);
                     if (!Enum.IsDefined(typeof(Instance), steamId.Instance))
                         steamId.Instance = Instance.Invalid;
                 }
                 else
                     if (steamId.AccountType == AccountType.Clan)
-                        steamId.Instance = Instance.All;
-                    else
-                        steamId.Instance = Instance.Desktop;
+                    steamId.Instance = Instance.All;
+                else
+                    steamId.Instance = Instance.Desktop;
                 steamId.IsValid = steamId.Validate();
             }
             else
@@ -179,8 +179,8 @@ namespace QueryMaster.Utils
             byte[] bytes = BitConverter.GetBytes(id);
             if (!BitConverter.IsLittleEndian)
                 Array.Reverse(bytes);
-            byte[] accountIdBytes = new byte[] { bytes[0], bytes[1], bytes[2], bytes[3] };
-            byte[] instanceBytes = new byte[] { bytes[4], bytes[5], (Byte)(bytes[6] & 0x0F), 0 };
+            byte[] accountIdBytes = { bytes[0], bytes[1], bytes[2], bytes[3] };
+            byte[] instanceBytes = { bytes[4], bytes[5], (byte)(bytes[6] & 0x0F), 0 };
             if (!BitConverter.IsLittleEndian)
             {
                 Array.Reverse(accountIdBytes);
@@ -190,7 +190,7 @@ namespace QueryMaster.Utils
             steamId.Instance = (Instance)Enum.Parse(typeof(Instance), BitConverter.ToUInt32(instanceBytes, 0).ToString(CultureInfo.InvariantCulture));
             if (!Enum.IsDefined(typeof(Instance), steamId.Instance))
                 steamId.Instance = Instance.Invalid;
-            steamId.AccountType = (AccountType)(int)(bytes[6] >> 4);
+            steamId.AccountType = (AccountType)(bytes[6] >> 4);
             if (!Enum.IsDefined(typeof(AccountType), steamId.AccountType))
                 steamId.AccountType = AccountType.Invalid;
             steamId.Universe = (Universe)bytes[7];
@@ -206,7 +206,7 @@ namespace QueryMaster.Utils
         /// <param name="url">Player's Url.</param>
         /// <param name="webApiKey">Steam web api key.</param>
         /// <returns>instance of <see cref="SteamId"/>.</returns>
-        public static SteamId FromCommunityUrl(string url,string webApiKey)
+        public static SteamId FromCommunityUrl(string url, string webApiKey)
         {
             SteamId steamId = null;
             if (Uri.IsWellFormedUriString(url, UriKind.Relative))
@@ -224,7 +224,7 @@ namespace QueryMaster.Utils
                 }
                 else
                 {
-                    steamId = SteamId.FromSteamId64((ulong)id);
+                    steamId = FromSteamId64((ulong)id);
                 }
             }
             else
@@ -251,7 +251,7 @@ namespace QueryMaster.Utils
         /// <returns>Returns steam id in the format : STEAM_X:Y:Z.</returns>
         public string ToLegacyFormat()
         {
-            return String.Format(CultureInfo.InvariantCulture,"STEAM_0:{0}:{1}", (AccountId & 1), (AccountId >> 1));
+            return string.Format(CultureInfo.InvariantCulture, "STEAM_0:{0}:{1}", (AccountId & 1), (AccountId >> 1));
         }
         /// <summary>
         /// Converts to its ID3 format :'[C:U:A]' or '[C:U:A:I]'
@@ -262,9 +262,9 @@ namespace QueryMaster.Utils
         {
             string id = string.Empty;
             if (includeInstanceId)
-                id = String.Format(CultureInfo.InvariantCulture,"[{0}:{1}:{2}:{3}]", AccountTypeMapper.Instance[AccountType], (int)Universe, AccountId, (int)Instance);
+                id = string.Format(CultureInfo.InvariantCulture, "[{0}:{1}:{2}:{3}]", AccountTypeMapper.Instance[AccountType], (int)Universe, AccountId, (int)Instance);
             else
-                id = String.Format(CultureInfo.InvariantCulture,"[{0}:{1}:{2}]", AccountTypeMapper.Instance[AccountType], (int)Universe, AccountId);
+                id = string.Format(CultureInfo.InvariantCulture, "[{0}:{1}:{2}]", AccountTypeMapper.Instance[AccountType], (int)Universe, AccountId);
             return id;
         }
         /// <summary>
@@ -277,7 +277,7 @@ namespace QueryMaster.Utils
             if (AccountType == AccountType.Individual)
                 id = (ulong)76561197960265728 + AccountId;
             else
-                id = ((ulong)Universe << 56) | ((ulong)AccountType << 52) | ((ulong)Instance <<32) | (ulong)AccountId;
+                id = ((ulong)Universe << 56) | ((ulong)AccountType << 52) | ((ulong)Instance << 32) | AccountId;
             return id;
         }
         /// <summary>
@@ -289,7 +289,7 @@ namespace QueryMaster.Utils
             string url = string.Empty;
             if (AccountType == AccountType.Individual)
                 url = "http://steamcommunity.com/profiles/" + ToSteamId64();
-            if(AccountType==AccountType.Clan)
+            if (AccountType == AccountType.Clan)
                 url = "http://steamcommunity.com/gid/" + ToSteamId64();
             return new Uri(url);
         }
@@ -299,7 +299,7 @@ namespace QueryMaster.Utils
         /// <returns>Vanity url.</returns>
         public Uri GetVanityUrl()
         {
-            string vanityUrl=string.Empty;
+            string vanityUrl = string.Empty;
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(ToCommunityUrl());
             webRequest.AllowAutoRedirect = false;
             webRequest.Timeout = 10000;
@@ -310,7 +310,7 @@ namespace QueryMaster.Utils
                     string url = webResponse.Headers["Location"];
                     if (!string.IsNullOrWhiteSpace(url))
                     {
-                        if (url.EndsWith("/",StringComparison.OrdinalIgnoreCase))
+                        if (url.EndsWith("/", StringComparison.OrdinalIgnoreCase))
                             url = url.Remove(url.Length - 1);
                         if (url.Contains('/'))
                         {
@@ -321,7 +321,7 @@ namespace QueryMaster.Utils
                             }
                         }
                     }
-                }                 
+                }
             }
             return new Uri(vanityUrl);
         }

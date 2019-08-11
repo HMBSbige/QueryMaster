@@ -25,50 +25,48 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster.Steam
+namespace QueryMaster.Steam.DataObjects.ISteamUser
 {
     /// <summary>
     /// Contains response of GetUserGroupList method.
     /// </summary>
     [Serializable]
-   public class GetUserGroupListResponse : SteamResponse 
+    public class GetUserGroupListResponse : SteamResponse
     {
         /// <summary>
         /// Parsed response.
         /// </summary>
         [JsonProperty("response")]
-       public GetUserGroupListResponseResponse ParsedResponse { get; internal set; }
+        public GetUserGroupListResponseResponse ParsedResponse { get; internal set; }
     }
 
     [Serializable]
-   public class GetUserGroupListResponseGroup : DataObject
-   {
+    public class GetUserGroupListResponseGroup : DataObject
+    {
         /// <summary>
-       /// 64 bit ID number of group.
+        /// 64 bit ID number of group.
         /// </summary>
         [JsonProperty("gid")]
-       public ulong GId { get; internal set; }
-   }
+        public ulong GId { get; internal set; }
+    }
 
     [Serializable]
-   public class GetUserGroupListResponseResponse : DataObject
-   {
+    public class GetUserGroupListResponseResponse : DataObject
+    {
         /// <summary>
-       /// The status of the request.
+        /// The status of the request.
         /// </summary>
         [JsonProperty("success")]
-       public bool IsSuccess { get; internal set; }
+        public bool IsSuccess { get; internal set; }
         /// <summary>
         /// List of groups user subscribes to.
         /// </summary>
         [JsonProperty("groups")]
-       public QueryMasterCollection<GetUserGroupListResponseGroup> Groups { get; internal set; }
-   }
+        public QueryMasterCollection<GetUserGroupListResponseGroup> Groups { get; internal set; }
+    }
 
 }

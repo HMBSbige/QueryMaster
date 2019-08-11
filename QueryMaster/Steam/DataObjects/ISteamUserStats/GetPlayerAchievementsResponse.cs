@@ -25,25 +25,23 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster.Steam
+namespace QueryMaster.Steam.DataObjects.ISteamUserStats
 {
     /// <summary>
     /// Contains response of GetPlayerAchievements method.
     /// </summary>
     [Serializable]
-    public class GetPlayerAchievementsResponse : SteamResponse 
+    public class GetPlayerAchievementsResponse : SteamResponse
     {
         /// <summary>
         /// Parsed response.
         /// </summary>
         [JsonProperty("playerstats")]
-      public GetPlayerAchievementsResponsePlayerstats ParsedResponse { get; internal set; }
+        public GetPlayerAchievementsResponsePlayerstats ParsedResponse { get; internal set; }
     }
 
     [Serializable]

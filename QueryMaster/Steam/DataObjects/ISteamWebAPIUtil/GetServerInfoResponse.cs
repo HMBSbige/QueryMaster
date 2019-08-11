@@ -25,38 +25,36 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster.Steam
+namespace QueryMaster.Steam.DataObjects.ISteamWebAPIUtil
 {
     /// <summary>
     /// Contains response of GetServerInfo method.
     /// </summary>
     [Serializable]
-   public class GetServerInfoResponse : SteamResponse 
+    public class GetServerInfoResponse : SteamResponse
     {
         /// <summary>
         /// Parsed response.
         /// </summary>
         [JsonProperty("RootObject")]
-       public GetServerInfoResponseRootObject ParsedResponse { get; internal set; }
+        public GetServerInfoResponseRootObject ParsedResponse { get; internal set; }
     }
     [Serializable]
-   public class GetServerInfoResponseRootObject : DataObject
-   {
+    public class GetServerInfoResponseRootObject : DataObject
+    {
         /// <summary>
-       /// Unix timestamp of WebAPI server. 
+        /// Unix timestamp of WebAPI server. 
         /// </summary>
-       [JsonProperty("servertime")]
-       public int ServerTime { get; internal set; }
+        [JsonProperty("servertime")]
+        public int ServerTime { get; internal set; }
         /// <summary>
-       /// Time string of WebAPI server.
+        /// Time string of WebAPI server.
         /// </summary>
         [JsonProperty("servertimestring")]
-       public string ServerTimeString { get; internal set; }
-   }
+        public string ServerTimeString { get; internal set; }
+    }
 }

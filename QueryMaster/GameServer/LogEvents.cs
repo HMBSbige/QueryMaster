@@ -25,12 +25,12 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
+using QueryMaster.GameServer.DataObjects;
+using QueryMaster.GameServer.EventArgs;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace QueryMaster.GameServer
@@ -38,7 +38,7 @@ namespace QueryMaster.GameServer
     /// <summary>
     /// Provides mechanism to subscribe and filter logged events.
     /// </summary>
-   public class LogEvents:QueryMasterBase
+    public class LogEvents : QueryMasterBase
     {
         internal IPEndPoint ServerEndPoint;
         internal Regex LineSplit = new Regex(": ");
@@ -46,9 +46,9 @@ namespace QueryMaster.GameServer
         internal Regex RegIsPlayerMsg = new Regex("^.*<\\d+><.+><.*>.*$");
         internal char[] QuoteSplitPattern = { '\"' };
 
-       /// <summary>
-       /// Represents a collection of filters.
-       /// </summary>
+        /// <summary>
+        /// Represents a collection of filters.
+        /// </summary>
         public LogFilterCollection Filters { get; set; }
         /// <summary>
         /// Occurs when Server cvar starts(In TFC, if tfc_clanbattle is 1, this doesn't happen.).
@@ -198,19 +198,19 @@ namespace QueryMaster.GameServer
         /// Occurs when a log comment is received.
         /// </summary>
         public event EventHandler<CommentReceivedEventArgs> CommentReceived;
-       /// <summary>
+        /// <summary>
         /// Initializes LogEvents.
-       /// </summary>
+        /// </summary>
         /// <param name="endPoint">server EndPoint.</param>
         protected internal LogEvents(IPEndPoint endPoint)
         {
             ServerEndPoint = endPoint;
             Filters = new LogFilterCollection();
         }
-       /// <summary>
-       /// Processes received log messages.
-       /// </summary>
-       /// <param name="logLine"></param>
+        /// <summary>
+        /// Processes received log messages.
+        /// </summary>
+        /// <param name="logLine"></param>
         protected internal void ProcessLog(string logLine)
         {
             ThrowIfDisposed();
@@ -229,10 +229,10 @@ namespace QueryMaster.GameServer
             }
 
             info = ApplyFilters(info);
-            if (String.IsNullOrEmpty(info))
+            if (string.IsNullOrEmpty(info))
                 return;
 
-            if (info.StartsWith("//",StringComparison.OrdinalIgnoreCase))
+            if (info.StartsWith("//", StringComparison.OrdinalIgnoreCase))
                 OnCommentReceive(Timestamp, info);
 
             OnLogReceive(Timestamp, info);
@@ -255,13 +255,13 @@ namespace QueryMaster.GameServer
                         case " killed ": OnKill(Timestamp, result); break;                          //57
                         case " attacked ": OnInjure(Timestamp, result); break;                      //58
                         case " triggered ":                                                         //59 ,60
-                            {
-                                if (result.Length > 3 && result[3] == " against ")
-                                    OnPlayer_PlayerAction(Timestamp, result);
-                                else
-                                    OnPlayerAction(Timestamp, result);
-                                break;
-                            }
+                        {
+                            if (result.Length > 3 && result[3] == " against ")
+                                OnPlayer_PlayerAction(Timestamp, result);
+                            else
+                                OnPlayerAction(Timestamp, result);
+                            break;
+                        }
                         case " say ": OnSay(Timestamp, result); break;                                //63a
                         case " say_team ": OnTeamSay(Timestamp, result); break;                          //63b
                         case " tell ": OnPrivateChat(Timestamp, result); break;                                //66
@@ -288,16 +288,16 @@ namespace QueryMaster.GameServer
                         case "Server say ": OnServerSay(Timestamp, result); break;                  //006
                         case "Kick: ": OnKick(Timestamp, result); break;                            //0052b
                         case "Team ":
+                        {
+                            switch (result[2])
                             {
-                                switch (result[2])
-                                {
-                                    case " triggered ": OnTeamAction(Timestamp, result); break;     //061
-                                    case " formed alliance with team ": OnTeamAlliance(Timestamp, result); break;   //064
-                                    case " scored ": OnTeamScoreReport(Timestamp, result); break;        //065
-                                }
-                                break;
-
+                                case " triggered ": OnTeamAction(Timestamp, result); break;     //061
+                                case " formed alliance with team ": OnTeamAlliance(Timestamp, result); break;   //064
+                                case " scored ": OnTeamScoreReport(Timestamp, result); break;        //065
                             }
+                            break;
+
+                        }
                         case "World triggered ": OnWorldAction(Timestamp, result); break;       //062
                         case "Player ": OnPlayerAction(Timestamp, result); break;               //60
                         case "Server shutdown": OnShutdown(Timestamp); break;                   //new
@@ -307,7 +307,7 @@ namespace QueryMaster.GameServer
             }
             catch (Exception)
             {
-                Exception.Fire(ServerEndPoint, new ExceptionEventArgs() { Timestamp = Timestamp, Message = info });
+                Exception.Fire(ServerEndPoint, new ExceptionEventArgs { Timestamp = Timestamp, Message = info });
             }
 
 
@@ -317,89 +317,89 @@ namespace QueryMaster.GameServer
         private string ApplyFilters(string logLine)
         {
             ThrowIfDisposed();
-           foreach( LogFilter i in Filters )
-           {
-               if (i.Enabled)
-               {
-                   if (i.RegexInstance == null)
-                       i.RegexInstance = new Regex(i.ToString());
+            foreach (LogFilter i in Filters)
+            {
+                if (i.Enabled)
+                {
+                    if (i.RegexInstance == null)
+                        i.RegexInstance = new Regex(i.ToString());
 
-                   switch(i.Action)
-                   {
-                       case LogFilterAction.Allow :
-                           {
-                               if (RegIsPlayerMsg.IsMatch(logLine))
-                               {
-                                   if (i.RegexInstance.IsMatch(logLine) == false)
-                                       logLine = string.Empty;
-                               }
-                               break;
-                           }
-                       case LogFilterAction.Block :
-                           {
-                               if (RegIsPlayerMsg.IsMatch(logLine))
-                               {
-                                   if (i.RegexInstance.IsMatch(logLine))
-                                       logLine = string.Empty;
-                               }
-                               break;
-                           }
-                   }
+                    switch (i.Action)
+                    {
+                        case LogFilterAction.Allow:
+                        {
+                            if (RegIsPlayerMsg.IsMatch(logLine))
+                            {
+                                if (i.RegexInstance.IsMatch(logLine) == false)
+                                    logLine = string.Empty;
+                            }
+                            break;
+                        }
+                        case LogFilterAction.Block:
+                        {
+                            if (RegIsPlayerMsg.IsMatch(logLine))
+                            {
+                                if (i.RegexInstance.IsMatch(logLine))
+                                    logLine = string.Empty;
+                            }
+                            break;
+                        }
+                    }
 
-               }
+                }
 
-           }
-           return logLine;
+            }
+            return logLine;
         }
-       /// <summary>
-       /// Disposes all the resources used by this instance.
-       /// </summary>
-       /// <param name="disposing"></param>
-       protected override void Dispose(bool disposing)
+        /// <summary>
+        /// Disposes all the resources used by this instance.
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected override void Dispose(bool disposing)
         {
-           if(!IsDisposed)
-           {
-               if(disposing)
-               {
-                   CvarStartMsg = null;
-                   ServerCvar = null;
-                   CvarEndMsg = null;
-                   LogFileStarted = null;
-                   LogFileClosed = null;
-                   MapLoaded = null;
-                   MapStarted = null;
-                   RconMsg = null;
-                   ServerName = null;
-                   ServerSay = null;
-                   PlayerConnected = null;
-                   PlayerValidated = null;
-                   PlayerEnteredGame = null;
-                   PlayerDisconnected = null;
-                   PlayerKicked = null;
-                   PlayerSuicided = null;
-                   PlayerJoinedTeam = null;
-                   PlayerChangedRole = null;
-                   PlayerChangedName = null;
-                   PlayerKilled = null;
-                   PlayerInjured = null;
-                   PlayerOnPLayerTriggered = null;
-                   PlayerTriggered = null;
-                   TeamTriggered = null;
-                   WorldTriggered = null;
-                   Say = null;
-                   TeamSay = null;
-                   TeamAlliance = null;
-                   TeamScoreReport = null;
-                   PrivateChat = null;
-                   PlayerScoreReport = null;
-                   PlayerSelectedWeapon = null;
-                   PlayerAcquiredWeapon = null;
-                   Shutdown = null;
-                   Exception = null;
-               }
-               base.Dispose(disposing);
-               IsDisposed = true;
-           }
+            if (!IsDisposed)
+            {
+                if (disposing)
+                {
+                    CvarStartMsg = null;
+                    ServerCvar = null;
+                    CvarEndMsg = null;
+                    LogFileStarted = null;
+                    LogFileClosed = null;
+                    MapLoaded = null;
+                    MapStarted = null;
+                    RconMsg = null;
+                    ServerName = null;
+                    ServerSay = null;
+                    PlayerConnected = null;
+                    PlayerValidated = null;
+                    PlayerEnteredGame = null;
+                    PlayerDisconnected = null;
+                    PlayerKicked = null;
+                    PlayerSuicided = null;
+                    PlayerJoinedTeam = null;
+                    PlayerChangedRole = null;
+                    PlayerChangedName = null;
+                    PlayerKilled = null;
+                    PlayerInjured = null;
+                    PlayerOnPLayerTriggered = null;
+                    PlayerTriggered = null;
+                    TeamTriggered = null;
+                    WorldTriggered = null;
+                    Say = null;
+                    TeamSay = null;
+                    TeamAlliance = null;
+                    TeamScoreReport = null;
+                    PrivateChat = null;
+                    PlayerScoreReport = null;
+                    PlayerSelectedWeapon = null;
+                    PlayerAcquiredWeapon = null;
+                    Shutdown = null;
+                    Exception = null;
+                }
+                base.Dispose(disposing);
+                IsDisposed = true;
+            }
         }
 
 
@@ -431,7 +431,7 @@ namespace QueryMaster.GameServer
         /// <param name="timestamp">Time at which <see cref="CvarStartMsg"/> event was fired.</param>
         protected virtual void OnCvarStart(DateTime timestamp)
         {
-            CvarStartMsg.Fire(ServerEndPoint, new LogEventArgs() { Timestamp = timestamp });
+            CvarStartMsg.Fire(ServerEndPoint, new LogEventArgs { Timestamp = timestamp });
         }
 
         //Server cvar "var" = "value"   [001.2]
@@ -442,7 +442,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="ServerCvar"/> event.</param>
         protected virtual void OnServerCvar(DateTime timestamp, string[] info)
         {
-            CvarEventArgs eventArgs = new CvarEventArgs()
+            CvarEventArgs eventArgs = new CvarEventArgs
             {
                 Timestamp = timestamp,
                 Cvar = info[1],
@@ -459,7 +459,7 @@ namespace QueryMaster.GameServer
         /// <param name="timestamp">Time at which <see cref="CvarEndMsg"/> event was fired.</param>
         protected virtual void OnCvarEnd(DateTime timestamp)
         {
-            CvarEndMsg.Fire(ServerEndPoint, new LogEventArgs() { Timestamp = timestamp });
+            CvarEndMsg.Fire(ServerEndPoint, new LogEventArgs { Timestamp = timestamp });
         }
 
         //Log file started (file "filename") (game "game") (version "protocol/release/build")   [002.1]
@@ -471,7 +471,7 @@ namespace QueryMaster.GameServer
         protected virtual void OnLogFileStart(DateTime timestamp, string[] info)
         {
             string[] tmp = info[5].Split('/');
-            LogStartEventArgs eventArgs = new LogStartEventArgs()
+            LogStartEventArgs eventArgs = new LogStartEventArgs
             {
                 Timestamp = timestamp,
                 FileName = info[1],
@@ -490,7 +490,7 @@ namespace QueryMaster.GameServer
         /// <param name="timestamp">Time at which <see cref="LogFileClosed"/> event was fired.</param>
         protected virtual void OnLogFileClose(DateTime timestamp)
         {
-            LogFileClosed.Fire(ServerEndPoint, new LogEventArgs() { Timestamp = timestamp });
+            LogFileClosed.Fire(ServerEndPoint, new LogEventArgs { Timestamp = timestamp });
         }
 
         //Loading map "map"  [003.1]
@@ -501,7 +501,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="MapLoaded"/> event.</param>
         protected virtual void OnMapLoading(DateTime timestamp, string[] info)
         {
-            MapLoadEventArgs eventArgs = new MapLoadEventArgs()
+            MapLoadEventArgs eventArgs = new MapLoadEventArgs
             {
                 Timestamp = timestamp,
                 MapName = info[1]
@@ -516,7 +516,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="MapStarted"/> event.</param>
         protected virtual void OnMapStart(DateTime timestamp, string[] info)
         {
-            MapStartEventArgs eventArgs = new MapStartEventArgs()
+            MapStartEventArgs eventArgs = new MapStartEventArgs
             {
                 Timestamp = timestamp,
                 MapName = info[1],
@@ -534,7 +534,7 @@ namespace QueryMaster.GameServer
         protected virtual void OnRconMsg(DateTime timestamp, string[] info)
         {
             string[] s = info[5].Split(':');
-            RconEventArgs eventArgs = new RconEventArgs()
+            RconEventArgs eventArgs = new RconEventArgs
             {
                 Timestamp = timestamp,
                 IsValid = info[0] == "Rcon: " ? true : false,
@@ -542,7 +542,7 @@ namespace QueryMaster.GameServer
                 Password = info[2],
                 Command = info[3],
                 Ip = s[0],
-                Port = ushort.Parse(s[1],CultureInfo.InvariantCulture)
+                Port = ushort.Parse(s[1], CultureInfo.InvariantCulture)
 
             };
             RconMsg.Fire(ServerEndPoint, eventArgs);
@@ -556,7 +556,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="ServerName"/> event.</param>
         protected virtual void OnserverName(DateTime timestamp, string[] info)
         {
-            ServerNameEventArgs eventArgs = new ServerNameEventArgs()
+            ServerNameEventArgs eventArgs = new ServerNameEventArgs
             {
                 Timestamp = timestamp,
                 Name = info[1]
@@ -571,7 +571,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="ServerSay"/> event.</param>
         protected virtual void OnServerSay(DateTime timestamp, string[] info)
         {
-            ServerSayEventArgs eventArgs = new ServerSayEventArgs()
+            ServerSayEventArgs eventArgs = new ServerSayEventArgs
             {
                 Timestamp = timestamp,
                 Message = info[1]
@@ -588,12 +588,12 @@ namespace QueryMaster.GameServer
         protected virtual void OnConnection(DateTime timestamp, string[] info)
         {
             string[] s = info[2].Split(':');
-            ConnectEventArgs eventArgs = new ConnectEventArgs()
+            ConnectEventArgs eventArgs = new ConnectEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0]),
                 Ip = s[0],
-                Port = ushort.Parse(s[1],CultureInfo.InvariantCulture)
+                Port = ushort.Parse(s[1], CultureInfo.InvariantCulture)
             };
             PlayerConnected.Fire(ServerEndPoint, eventArgs);
         }
@@ -606,10 +606,10 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerValidated"/> event.</param>
         protected virtual void OnValidation(DateTime timestamp, string[] info)
         {
-            PlayerEventArgs eventArgs = new PlayerEventArgs()
+            PlayerEventArgs eventArgs = new PlayerEventArgs
             {
                 Timestamp = timestamp,
-                Player = GetPlayerInfo(info[0]),
+                Player = GetPlayerInfo(info[0])
             };
             PlayerValidated.Fire(ServerEndPoint, eventArgs);
         }
@@ -622,10 +622,10 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerEnteredGame"/> event.</param>
         protected virtual void OnEnterGame(DateTime timestamp, string[] info)
         {
-            PlayerEventArgs eventArgs = new PlayerEventArgs()
+            PlayerEventArgs eventArgs = new PlayerEventArgs
             {
                 Timestamp = timestamp,
-                Player = GetPlayerInfo(info[0]),
+                Player = GetPlayerInfo(info[0])
             };
             PlayerEnteredGame.Fire(ServerEndPoint, eventArgs);
         }
@@ -638,10 +638,10 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerDisconnected"/> event.</param>
         protected virtual void OnDisconnection(DateTime timestamp, string[] info)
         {
-            PlayerEventArgs eventArgs = new PlayerEventArgs()
+            PlayerEventArgs eventArgs = new PlayerEventArgs
             {
                 Timestamp = timestamp,
-                Player = GetPlayerInfo(info[0]),
+                Player = GetPlayerInfo(info[0])
             };
             PlayerDisconnected.Fire(ServerEndPoint, eventArgs);
         }
@@ -653,7 +653,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerKicked"/> event.</param>
         protected virtual void OnKick(DateTime timestamp, string[] info)
         {
-            KickEventArgs eventArgs = new KickEventArgs()
+            KickEventArgs eventArgs = new KickEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[1]),
@@ -671,7 +671,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerSuicided"/> event.</param>
         protected virtual void OnSuicide(DateTime timestamp, string[] info)
         {
-            SuicideEventArgs eventArgs = new SuicideEventArgs()
+            SuicideEventArgs eventArgs = new SuicideEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0]),
@@ -688,7 +688,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerJoinedTeam"/> event.</param>
         protected virtual void OnTeamSelection(DateTime timestamp, string[] info)
         {
-            TeamSelectionEventArgs eventArgs = new TeamSelectionEventArgs()
+            TeamSelectionEventArgs eventArgs = new TeamSelectionEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0]),
@@ -705,7 +705,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerChangedRole"/> event.</param>
         protected virtual void OnRoleSelection(DateTime timestamp, string[] info)
         {
-            RoleSelectionEventArgs eventArgs = new RoleSelectionEventArgs()
+            RoleSelectionEventArgs eventArgs = new RoleSelectionEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0]),
@@ -722,7 +722,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerChangedName"/> event.</param>
         protected virtual void OnNameChange(DateTime timestamp, string[] info)
         {
-            NameChangeEventArgs eventArgs = new NameChangeEventArgs()
+            NameChangeEventArgs eventArgs = new NameChangeEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0]),
@@ -739,7 +739,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerKilled"/> event.</param>
         protected virtual void OnKill(DateTime timestamp, string[] info)
         {
-            KillEventArgs eventArgs = new KillEventArgs()
+            KillEventArgs eventArgs = new KillEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0]),
@@ -757,7 +757,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerInjured"/> event.</param>
         protected virtual void OnInjure(DateTime timestamp, string[] info)
         {
-            InjureEventArgs eventArgs = new InjureEventArgs()
+            InjureEventArgs eventArgs = new InjureEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0]),
@@ -776,7 +776,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerOnPLayerTriggered"/> event.</param>
         protected virtual void OnPlayer_PlayerAction(DateTime timestamp, string[] info)
         {
-            PlayerOnPlayerEventArgs eventArgs = new PlayerOnPlayerEventArgs()
+            PlayerOnPlayerEventArgs eventArgs = new PlayerOnPlayerEventArgs
             {
                 Timestamp = timestamp,
                 Source = GetPlayerInfo(info[0]),
@@ -800,7 +800,7 @@ namespace QueryMaster.GameServer
                 for (int i = 3; i < info.Length; i++)
                     s += info[i];
             }
-            PlayerActionEventArgs eventArgs = new PlayerActionEventArgs()
+            PlayerActionEventArgs eventArgs = new PlayerActionEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0]),
@@ -818,7 +818,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="TeamTriggered"/> event.</param>
         protected virtual void OnTeamAction(DateTime timestamp, string[] info)
         {
-            TeamActionEventArgs eventArgs = new TeamActionEventArgs()
+            TeamActionEventArgs eventArgs = new TeamActionEventArgs
             {
                 Timestamp = timestamp,
                 Team = info[1],
@@ -835,7 +835,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="WorldTriggered"/> event.</param>
         protected virtual void OnWorldAction(DateTime timestamp, string[] info)
         {
-            WorldActionEventArgs eventArgs = new WorldActionEventArgs()
+            WorldActionEventArgs eventArgs = new WorldActionEventArgs
             {
                 Timestamp = timestamp,
                 Action = info[1]
@@ -850,7 +850,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="Say"/> event.</param>
         protected virtual void OnSay(DateTime timestamp, string[] info)
         {
-            ChatEventArgs eventArgs = new ChatEventArgs()
+            ChatEventArgs eventArgs = new ChatEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0]),
@@ -867,7 +867,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="TeamSay"/> event.</param>
         protected virtual void OnTeamSay(DateTime timestamp, string[] info)
         {
-            ChatEventArgs eventArgs = new ChatEventArgs()
+            ChatEventArgs eventArgs = new ChatEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0]),
@@ -884,7 +884,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="TeamAlliance"/> event.</param>
         protected virtual void OnTeamAlliance(DateTime timestamp, string[] info)
         {
-            TeamAllianceEventArgs eventArgs = new TeamAllianceEventArgs()
+            TeamAllianceEventArgs eventArgs = new TeamAllianceEventArgs
             {
                 Timestamp = timestamp,
                 Team1 = info[1],
@@ -907,7 +907,7 @@ namespace QueryMaster.GameServer
                 for (int i = 6; i < info.Length; i++)
                     details += info[i];
             }
-            TeamScoreReportEventArgs eventArgs = new TeamScoreReportEventArgs()
+            TeamScoreReportEventArgs eventArgs = new TeamScoreReportEventArgs
             {
                 Timestamp = timestamp,
                 Team = info[1],
@@ -926,7 +926,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PrivateChat"/> event.</param>
         protected virtual void OnPrivateChat(DateTime timestamp, string[] info)
         {
-            PrivateChatEventArgs eventArgs = new PrivateChatEventArgs()
+            PrivateChatEventArgs eventArgs = new PrivateChatEventArgs
             {
                 Timestamp = timestamp,
                 Sender = GetPlayerInfo(info[0]),
@@ -950,7 +950,7 @@ namespace QueryMaster.GameServer
                 for (int i = 4; i < info.Length; i++)
                     details += info[i];
             }
-            PlayerScoreReportEventArgs eventArgs = new PlayerScoreReportEventArgs()
+            PlayerScoreReportEventArgs eventArgs = new PlayerScoreReportEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[1]),
@@ -969,7 +969,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerSelectedWeapon"/> event.</param>
         protected virtual void OnWeaponSelection(DateTime timestamp, string[] info)
         {
-            WeaponEventArgs eventArgs = new WeaponEventArgs()
+            WeaponEventArgs eventArgs = new WeaponEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0]),
@@ -986,7 +986,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="PlayerSelectedWeapon"/> event.</param>
         protected virtual void OnWeaponPickup(DateTime timestamp, string[] info)
         {
-            WeaponEventArgs eventArgs = new WeaponEventArgs()
+            WeaponEventArgs eventArgs = new WeaponEventArgs
             {
                 Timestamp = timestamp,
                 Player = GetPlayerInfo(info[0]),
@@ -1000,7 +1000,7 @@ namespace QueryMaster.GameServer
         /// <param name="timestamp">Time at which <see cref="PlayerSelectedWeapon"/> event was fired.</param>
         protected virtual void OnShutdown(DateTime timestamp)
         {
-            Shutdown.Fire(ServerEndPoint, new LogEventArgs() { Timestamp = timestamp });
+            Shutdown.Fire(ServerEndPoint, new LogEventArgs { Timestamp = timestamp });
         }
         /// <summary>
         /// Raises the <see cref="Exception"/> event.
@@ -1009,7 +1009,7 @@ namespace QueryMaster.GameServer
         /// <param name="info">Information about <see cref="Exception"/> event.</param>
         protected virtual void OnException(DateTime timestamp, string info)
         {
-            ExceptionEventArgs eventArgs = new ExceptionEventArgs()
+            ExceptionEventArgs eventArgs = new ExceptionEventArgs
             {
                 Timestamp = timestamp,
                 Message = info
@@ -1022,12 +1022,12 @@ namespace QueryMaster.GameServer
         private LogPlayerInfo GetPlayerInfo(string s)
         {
             Match match = RegPlayer.Match(s);
-            LogPlayerInfo info = new LogPlayerInfo()
+            LogPlayerInfo info = new LogPlayerInfo
             {
                 Name = match.Groups[1].Value,
                 Uid = match.Groups[2].Value,
                 WonId = match.Groups[3].Value,
-                Team = match.Groups[4].Value,
+                Team = match.Groups[4].Value
             };
             return info;
         }

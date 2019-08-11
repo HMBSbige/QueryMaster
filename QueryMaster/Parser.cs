@@ -25,18 +25,18 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace QueryMaster
 {
-   internal class Parser
+    internal class Parser
     {
-        private byte[] Data = null;
+        private byte[] Data;
         private int CurrentPosition = -1;
-        private int LastPosition=0;
+        private int LastPosition;
         internal bool HasUnParsedBytes
         {
             get { return CurrentPosition <= LastPosition; }
@@ -60,12 +60,12 @@ namespace QueryMaster
 
         internal ushort ReadUShort()
         {
-            ushort num=0;
+            ushort num = 0;
 
             CurrentPosition++;
             if (CurrentPosition + 3 > LastPosition)
                 throw new ParseException("Unable to parse bytes to ushort.");
-            
+
             if (!BitConverter.IsLittleEndian)
                 Array.Reverse(Data, CurrentPosition, 2);
 
@@ -141,7 +141,7 @@ namespace QueryMaster
                     throw new ParseException("Unable to parse bytes to string.");
             }
 
-            str= Encoding.UTF8.GetString(Data, temp, CurrentPosition - temp);
+            str = Encoding.UTF8.GetString(Data, temp, CurrentPosition - temp);
 
             return str;
         }

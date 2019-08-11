@@ -25,19 +25,18 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster.Steam
+using Newtonsoft.Json;
+using QueryMaster.JsonConverters;
+using System;
+
+namespace QueryMaster.Steam.DataObjects.IPlayerService
 {
     /// <summary>
     /// Contains response of GetBadges method.
     /// </summary>
     [Serializable]
-    public class GetBadgesResponse : SteamResponse 
+    public class GetBadgesResponse : SteamResponse
     {
         /// <summary>
         /// Parsed response.
@@ -82,13 +81,13 @@ namespace QueryMaster.Steam
         /// <summary>
         /// Provided if the badge relates to an app (trading cards)(Optional).
         /// </summary>
-         [JsonProperty("communityitemid ")]
+        [JsonProperty("communityitemid ")]
         public uint CommunityItemId { get; internal set; }
         /// <summary>
-         /// Provided if the badge relates to an app (trading cards)(Optional).
+        /// Provided if the badge relates to an app (trading cards)(Optional).
         /// </summary>
         [JsonProperty("border_color ")]
-         public string BorderColor { get; internal set; }
+        public string BorderColor { get; internal set; }
     }
 
     [Serializable]

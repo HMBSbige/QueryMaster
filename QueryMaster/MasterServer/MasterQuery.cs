@@ -25,10 +25,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using System.Net;
 
 namespace QueryMaster.MasterServer
@@ -56,7 +53,7 @@ namespace QueryMaster.MasterServer
         /// <param name="retries">Number of times to retry if first attempt fails.</param>
         /// <param name="attemptCallback">Called on every attempt made to fetch batch.</param>
         /// <returns>Master server instance</returns>
-        public static Server GetServerInstance(IPEndPoint endPoint,int sendTimeout=3000,int receiveTimeout=3000,int retries=3,AttemptCallback attemptCallback=null)
+        public static Server GetServerInstance(IPEndPoint endPoint, int sendTimeout = 3000, int receiveTimeout = 3000, int retries = 3, AttemptCallback attemptCallback = null)
         {
             Server server = null;
             ConnectionInfo conInfo = new ConnectionInfo
@@ -66,7 +63,7 @@ namespace QueryMaster.MasterServer
                 Retries = retries,
                 EndPoint = endPoint
             };
-            server = new Server(conInfo,attemptCallback);
+            server = new Server(conInfo, attemptCallback);
             return server;
         }
     }

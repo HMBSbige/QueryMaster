@@ -25,13 +25,11 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster
+namespace QueryMaster.JsonConverters
 {
     class IntegerUnixTimeStampConverter : JsonConverter
     {
@@ -45,9 +43,9 @@ namespace QueryMaster
             string value = reader.Value.ToString();
             double seconds = 0;
             DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            if (Double.TryParse(value, out seconds))
+            if (double.TryParse(value, out seconds))
             {
-              dateTime=  dateTime.AddSeconds(seconds).ToLocalTime();
+                dateTime = dateTime.AddSeconds(seconds).ToLocalTime();
             }
             return dateTime;
         }

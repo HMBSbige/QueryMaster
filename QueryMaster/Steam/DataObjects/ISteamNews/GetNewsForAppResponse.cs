@@ -25,13 +25,12 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster.Steam
+using Newtonsoft.Json;
+using QueryMaster.JsonConverters;
+using System;
+
+namespace QueryMaster.Steam.DataObjects.ISteamNews
 {
     /// <summary>
     /// Contains response of GetNewsForApp method.
@@ -87,7 +86,7 @@ namespace QueryMaster.Steam
         /// <summary>
         ///  Date the item was posted.
         /// </summary>
-        [JsonProperty("date"),JsonConverter(typeof(IntegerUnixTimeStampConverter))]
+        [JsonProperty("date"), JsonConverter(typeof(IntegerUnixTimeStampConverter))]
         public DateTime Date { get; internal set; }
         /// <summary>
         /// An internal tag that describes the source of the news item.
@@ -108,6 +107,6 @@ namespace QueryMaster.Steam
         /// Collection of <see cref="GetNewsForAppResponseNewsItem"/> describing each news item. 
         /// </summary>
         [JsonProperty("newsitems")]
-        public QueryMasterCollection<GetNewsForAppResponseNewsItem> NewsItems { get;internal set; }
+        public QueryMasterCollection<GetNewsForAppResponseNewsItem> NewsItems { get; internal set; }
     }
 }

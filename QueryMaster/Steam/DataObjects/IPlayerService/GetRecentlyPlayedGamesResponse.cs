@@ -25,29 +25,28 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster.Steam
+using Newtonsoft.Json;
+using QueryMaster.JsonConverters;
+using System;
+
+namespace QueryMaster.Steam.DataObjects.IPlayerService
 {
     /// <summary>
     /// Contains response of GetRecentlyPlayedGames method.
     /// </summary>
     [Serializable]
-   public class GetRecentlyPlayedGamesResponse : SteamResponse 
+    public class GetRecentlyPlayedGamesResponse : SteamResponse
     {
         /// <summary>
         /// Parsed response.
         /// </summary>
         [JsonProperty("response")]
-       public GetRecentlyPlayedGamesResponseResponse ParsedResponse { get; internal set; }
+        public GetRecentlyPlayedGamesResponseResponse ParsedResponse { get; internal set; }
     }
 
     [Serializable]
-   public class GetRecentlyPlayedGamesResponseResponse : DataObject
+    public class GetRecentlyPlayedGamesResponseResponse : DataObject
     {
         /// <summary>
         /// Total number of games. 

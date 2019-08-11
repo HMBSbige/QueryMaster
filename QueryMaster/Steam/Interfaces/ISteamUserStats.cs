@@ -25,20 +25,16 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Xml;
 
-namespace QueryMaster.Steam
+using QueryMaster.Steam.DataObjects.ISteamUserStats;
+using System.Globalization;
+
+namespace QueryMaster.Steam.Interfaces
 {
     /// <summary>
     /// Represents the ISteamUserStats Interface.
     /// </summary>
-    public class ISteamUserStats :InterfaceBase 
+    public class ISteamUserStats : InterfaceBase
     {
         internal ISteamUserStats()
         {
@@ -51,7 +47,7 @@ namespace QueryMaster.Steam
         /// <returns>Instance of <see cref="GetGlobalAchievementPercentagesForAppResponse"/>.</returns>
         public GetGlobalAchievementPercentagesForAppResponse GetGlobalAchievementPercentagesForApp(ulong gameId)
         {
-            SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetGlobalAchievementPercentagesForApp", Version = 2};
+            SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetGlobalAchievementPercentagesForApp", Version = 2 };
             url.Parameters.Add(new Parameter { Name = "gameid", Value = gameId.ToString(CultureInfo.InvariantCulture) });
             return GetParsedResponse<GetGlobalAchievementPercentagesForAppResponse>(url);
         }
@@ -63,12 +59,12 @@ namespace QueryMaster.Steam
         /// <param name="EndDate">End date for daily totals (unix epoch timestamp).</param>
         /// <param name="names">Names of stat to get data for.</param>
         /// <returns>Instance of <see cref="GetGlobalStatsForGameResponse"/>.</returns>
-        public GetGlobalStatsForGameResponse GetGlobalStatsForGame(uint appId, UInt32? StartDate = null, UInt32? EndDate = null, params string[] names)
+        public GetGlobalStatsForGameResponse GetGlobalStatsForGame(uint appId, uint? StartDate = null, uint? EndDate = null, params string[] names)
         {
             SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetGlobalStatsForGame", Version = 1 };
             url.Parameters.Add(new Parameter { Name = "appid", Value = appId.ToString(CultureInfo.InvariantCulture) });
             url.Parameters.Add(new Parameter { Name = "count", Value = names.Length.ToString(CultureInfo.InvariantCulture) });
-            for (int i = 0; i < names.Length;i++ )
+            for (int i = 0; i < names.Length; i++)
             {
                 url.Parameters.Add(new Parameter { Name = "name[" + i + "]", Value = names[i] });
             }
@@ -84,7 +80,7 @@ namespace QueryMaster.Steam
         /// </summary>
         /// <param name="appId">AppID that we're getting user count for.</param>
         /// <returns>Instance of <see cref="GetNumberOfCurrentPlayersResponse"/>.</returns>
-        public GetNumberOfCurrentPlayersResponse GetNumberOfCurrentPlayers(UInt32 appId)
+        public GetNumberOfCurrentPlayersResponse GetNumberOfCurrentPlayers(uint appId)
         {
             SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetNumberOfCurrentPlayers", Version = 1 };
             url.Parameters.Add(new Parameter { Name = "appid", Value = appId.ToString(CultureInfo.InvariantCulture) });
@@ -100,7 +96,7 @@ namespace QueryMaster.Steam
         /// <returns>Instance of <see cref="GetPlayerAchievementsResponse"/>.</returns>
         public GetPlayerAchievementsResponse GetPlayerAchievements(ulong steamId, uint appId, string language = "English")
         {
-            SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetPlayerAchievements", Version = 1,AppendKey=true };
+            SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetPlayerAchievements", Version = 1, AppendKey = true };
             url.Parameters.Add(new Parameter { Name = "steamid", Value = steamId.ToString(CultureInfo.InvariantCulture) });
             url.Parameters.Add(new Parameter { Name = "appid", Value = appId.ToString(CultureInfo.InvariantCulture) });
             url.Parameters.Add(new Parameter { Name = "l", Value = language });
@@ -112,7 +108,7 @@ namespace QueryMaster.Steam
         /// <param name="appId">Application Id.</param>
         /// <param name="language">localized language to return.</param>
         /// <returns>Instance of <see cref="GetSchemaForGameResponse"/>.</returns>
-        public GetSchemaForGameResponse GetSchemaForGame(uint appId,string language="English")
+        public GetSchemaForGameResponse GetSchemaForGame(uint appId, string language = "English")
         {
             SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetSchemaForGame", Version = 2, AppendKey = true };
             url.Parameters.Add(new Parameter { Name = "appid", Value = appId.ToString(CultureInfo.InvariantCulture) });

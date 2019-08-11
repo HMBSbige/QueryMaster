@@ -25,25 +25,24 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using QueryMaster.JsonConverters;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 
-namespace QueryMaster.MasterServer
+namespace QueryMaster.MasterServer.DataObjects
 {
     /// <summary>
     /// Contains information on the batch received from master server.
     /// </summary>
     [Serializable]
-    public class BatchInfo:DataObject
+    public class BatchInfo : DataObject
     {
-        internal BatchInfo() 
-        { 
-            Converters =new JsonConverter[]{new StringIpEndPointConverter()};
+        internal BatchInfo()
+        {
+            Converters = new JsonConverter[] { new StringIpEndPointConverter() };
         }
         /// <summary>
         /// Master server EndPoint.

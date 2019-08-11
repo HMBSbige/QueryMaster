@@ -25,19 +25,17 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster.Steam
+namespace QueryMaster.Steam.DataObjects.ISteamUser
 {
     /// <summary>
     /// Contains response of ResolveVanityURL method.
     /// </summary>
     [Serializable]
-   public class ResolveVanityURLResponse : SteamResponse
+    public class ResolveVanityURLResponse : SteamResponse
     {
         /// <summary>
         /// Parsed response.
@@ -47,18 +45,18 @@ namespace QueryMaster.Steam
     }
 
     [Serializable]
-   public class ResolveVanityURLResponseResponse : DataObject
-   {
+    public class ResolveVanityURLResponseResponse : DataObject
+    {
         /// <summary>
-       /// The 64 bit Steam ID the vanity URL resolves to.
+        /// The 64 bit Steam ID the vanity URL resolves to.
         /// </summary>
-       [JsonProperty("steamid")]
-       public ulong? SteamId { get; internal set; }
-       /// <summary>
-       /// The status of the request(1 on successful match else 42).
-       /// </summary>
-       [JsonProperty("success")]
-       public int? Success { get; internal set; }
-   }
+        [JsonProperty("steamid")]
+        public ulong? SteamId { get; internal set; }
+        /// <summary>
+        /// The status of the request(1 on successful match else 42).
+        /// </summary>
+        [JsonProperty("success")]
+        public int? Success { get; internal set; }
+    }
 
 }

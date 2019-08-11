@@ -25,19 +25,18 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster.Steam
+using Newtonsoft.Json;
+using QueryMaster.JsonConverters;
+using QueryMaster.Steam.DataObjects.ISteamUser;
+using System.Globalization;
+
+namespace QueryMaster.Steam.Interfaces
 {
     /// <summary>
     /// Represents the ISteamUser interface.
     /// </summary>
-    public class ISteamUser : InterfaceBase 
+    public class ISteamUser : InterfaceBase
     {
         internal ISteamUser()
         {
@@ -51,9 +50,9 @@ namespace QueryMaster.Steam
         /// <param name="relationship">Filter by a given role.</param>
         /// <returns>Instance of <see cref="GetFriendListResponse"/>.</returns>
         /// <remarks>Returns the list of friends if the profile is public or there are entries for the given relationship.</remarks>
-        public GetFriendListResponse GetFriendList(ulong steamId,GetFriendListRelationship relationship= GetFriendListRelationship.All)
+        public GetFriendListResponse GetFriendList(ulong steamId, GetFriendListRelationship relationship = GetFriendListRelationship.All)
         {
-            SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetFriendList", Version = 1,AppendKey=true };
+            SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetFriendList", Version = 1, AppendKey = true };
             url.Parameters.Add(new Parameter { Name = "steamid", Value = steamId.ToString(CultureInfo.InvariantCulture) });
             url.Parameters.Add(new Parameter { Name = "relationship", Value = relationship.ToString() });
             return GetParsedResponse<GetFriendListResponse>(url);
@@ -66,12 +65,12 @@ namespace QueryMaster.Steam
         /// <returns>Instance of <see cref="GetPlayerBansResponse"/>.</returns>
         public GetPlayerBansResponse GetPlayerBans(params ulong[] steamIds)
         {
-            if (steamIds.Length==0)
+            if (steamIds.Length == 0)
                 throw new SteamException("Please pass 64-bit steamid(s)");
             SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetPlayerBans", Version = 1, AppendKey = true };
-            url.Parameters.Add(new Parameter { Name = "steamids", Value = string.Join(",",steamIds) });
-            return GetParsedResponse<GetPlayerBansResponse>(url,true);
-            
+            url.Parameters.Add(new Parameter { Name = "steamids", Value = string.Join(",", steamIds) });
+            return GetParsedResponse<GetPlayerBansResponse>(url, true);
+
         }
         /// <summary>
         /// Gets Users' profile data(GetPlayerSummaries web api method(version 2)).

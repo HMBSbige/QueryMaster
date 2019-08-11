@@ -25,10 +25,8 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Runtime.Serialization;
 
 namespace QueryMaster
@@ -39,7 +37,8 @@ namespace QueryMaster
     [Serializable]
     public class QueryMasterException : Exception
     {
-        public QueryMasterException() : base() { }
+        public QueryMasterException()
+        { }
         public QueryMasterException(string message) : base(message) { }
         public QueryMasterException(string message, Exception innerException) : base(message, innerException) { }
         protected QueryMasterException(SerializationInfo info, StreamingContext context) : base(info, context) { }
@@ -51,7 +50,8 @@ namespace QueryMaster
     [Serializable]
     public class InvalidHeaderException : QueryMasterException
     {
-        public InvalidHeaderException() : base() { }
+        public InvalidHeaderException()
+        { }
         public InvalidHeaderException(string message) : base(message) { }
         public InvalidHeaderException(string message, Exception innerException) : base(message, innerException) { }
         protected InvalidHeaderException(SerializationInfo info, StreamingContext context) : base(info, context) { }
@@ -63,7 +63,8 @@ namespace QueryMaster
     [Serializable]
     public class InvalidPacketException : QueryMasterException
     {
-        public InvalidPacketException() : base() { }
+        public InvalidPacketException()
+        { }
         public InvalidPacketException(string message) : base(message) { }
         public InvalidPacketException(string message, Exception innerException) : base(message, innerException) { }
         protected InvalidPacketException(SerializationInfo info, StreamingContext context) : base(info, context) { }
@@ -74,7 +75,8 @@ namespace QueryMaster
     [Serializable]
     public class ParseException : QueryMasterException
     {
-        public ParseException() : base() { }
+        public ParseException()
+        { }
         public ParseException(string message) : base(message) { }
         public ParseException(string message, Exception innerException) : base(message, innerException) { }
         protected ParseException(SerializationInfo info, StreamingContext context) : base(info, context) { }
@@ -85,7 +87,8 @@ namespace QueryMaster
     [Serializable]
     public class GameServerException : QueryMasterException
     {
-        public GameServerException() : base() { }
+        public GameServerException()
+        { }
         public GameServerException(string message) : base(message) { }
         public GameServerException(string message, Exception innerException) : base(message, innerException) { }
         protected GameServerException(SerializationInfo info, StreamingContext context) : base(info, context) { }
@@ -96,7 +99,8 @@ namespace QueryMaster
     [Serializable]
     public class MasterServerException : QueryMasterException
     {
-        public MasterServerException() : base() { }
+        public MasterServerException()
+        { }
         public MasterServerException(string message) : base(message) { }
         public MasterServerException(string message, Exception innerException) : base(message, innerException) { }
         protected MasterServerException(SerializationInfo info, StreamingContext context) : base(info, context) { }
@@ -107,7 +111,8 @@ namespace QueryMaster
     [Serializable]
     public class SteamException : QueryMasterException
     {
-        public SteamException() : base() { }
+        public SteamException()
+        { }
         public SteamException(string message) : base(message) { }
         public SteamException(string message, Exception innerException) : base(message, innerException) { }
         protected SteamException(SerializationInfo info, StreamingContext context) : base(info, context) { }

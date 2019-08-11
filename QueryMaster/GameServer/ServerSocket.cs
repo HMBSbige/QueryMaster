@@ -25,12 +25,11 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Net.Sockets;
 using System.Net;
+using System.Net.Sockets;
 
 namespace QueryMaster.GameServer
 {
@@ -38,22 +37,22 @@ namespace QueryMaster.GameServer
     {
         internal static readonly int UdpBufferSize = 1400;
         internal static readonly int TcpBufferSize = 4110;
-        internal IPEndPoint Address = null;
-        protected internal int BufferSize = 0;
+        internal IPEndPoint Address;
+        protected internal int BufferSize;
         internal EngineType EngineType { get; set; }
         internal Socket Socket { set; get; }
         private readonly object LockObj = new object();
-        internal ServerSocket(ConnectionInfo conInfo,ProtocolType  type)
+        internal ServerSocket(ConnectionInfo conInfo, ProtocolType type)
         {
             switch (type)
             {
-                case ProtocolType.Tcp: 
-                    Socket = new Socket(AddressFamily.InterNetwork, System.Net.Sockets.SocketType.Stream, ProtocolType.Tcp); 
-                    BufferSize = TcpBufferSize; 
+                case ProtocolType.Tcp:
+                    Socket = new Socket(AddressFamily.InterNetwork, System.Net.Sockets.SocketType.Stream, ProtocolType.Tcp);
+                    BufferSize = TcpBufferSize;
                     break;
-                case ProtocolType.Udp: 
-                    Socket = new Socket(AddressFamily.InterNetwork, System.Net.Sockets.SocketType.Dgram, ProtocolType.Udp); 
-                    BufferSize = UdpBufferSize; 
+                case ProtocolType.Udp:
+                    Socket = new Socket(AddressFamily.InterNetwork, System.Net.Sockets.SocketType.Dgram, ProtocolType.Udp);
+                    BufferSize = UdpBufferSize;
                     break;
                 default: throw new ArgumentException("An invalid SocketType was specified.");
             }
@@ -71,7 +70,7 @@ namespace QueryMaster.GameServer
         internal int SendData(byte[] data)
         {
             ThrowIfDisposed();
-            lock(LockObj)
+            lock (LockObj)
                 return Socket.Send(data);
         }
 
@@ -80,7 +79,7 @@ namespace QueryMaster.GameServer
             ThrowIfDisposed();
             byte[] recvData = new byte[BufferSize];
             int recv = 0;
-            lock(LockObj)
+            lock (LockObj)
                 recv = Socket.Receive(recvData);
             return recvData.Take(recv).ToArray();
         }

@@ -25,41 +25,39 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster.Steam
+namespace QueryMaster.Steam.DataObjects.ISteamUserStats
 {
     /// <summary>
     /// Contains response of GetNumberOfCurrentPlayers method.
     /// </summary>
     [Serializable]
-   public class GetNumberOfCurrentPlayersResponse : SteamResponse 
+    public class GetNumberOfCurrentPlayersResponse : SteamResponse
     {
         /// <summary>
         /// Parsed response.
         /// </summary>
         [JsonProperty("response")]
-       public GetNumberOfCurrentPlayersResponseResponse ParsedResponse { get; internal set; }
+        public GetNumberOfCurrentPlayersResponseResponse ParsedResponse { get; internal set; }
     }
 
     [Serializable]
-   public class GetNumberOfCurrentPlayersResponseResponse : DataObject
-   {
+    public class GetNumberOfCurrentPlayersResponseResponse : DataObject
+    {
         /// <summary>
         /// Count of players.
         /// </summary>
         [JsonProperty("player_count")]
-       public int Count { get; internal set; }
+        public int Count { get; internal set; }
         /// <summary>
         /// Result.
         /// </summary>
         [JsonProperty("result")]
-       public int Result { get; internal set; }
-   }
+        public int Result { get; internal set; }
+    }
 
 
 }

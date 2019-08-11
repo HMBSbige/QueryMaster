@@ -25,13 +25,11 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster.Steam
+namespace QueryMaster.Steam.DataObjects.IPlayerService
 {
     /// <summary>
     /// Contains response of GetSteamLevel method.
@@ -53,6 +51,6 @@ namespace QueryMaster.Steam
         /// The steam level of the player.
         /// </summary>
         [JsonProperty("player_level")]
-        public int  Level { get; internal set; }
+        public int Level { get; internal set; }
     }
 }

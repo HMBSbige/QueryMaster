@@ -25,20 +25,17 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.Text;
 
-namespace QueryMaster.Steam
+using QueryMaster.Steam.DataObjects.ISteamApps;
+using System.Globalization;
+using System.Net;
+
+namespace QueryMaster.Steam.Interfaces
 {
     /// <summary>
     /// Represents the ISteamApps interface.
     /// </summary>
-    public class ISteamApps:InterfaceBase
+    public class ISteamApps : InterfaceBase
     {
         internal ISteamApps()
         {
@@ -70,13 +67,13 @@ namespace QueryMaster.Steam
         /// <param name="appId">Application Id of the game</param>
         /// <param name="version">The installed version of the game.</param>
         /// <returns>Instance of <see cref="UpToDateCheckResponse"/>.</returns>
-        public UpToDateCheckResponse UpToDateCheck(UInt32 appId,UInt32 version)
+        public UpToDateCheckResponse UpToDateCheck(uint appId, uint version)
         {
             SteamUrl url = new SteamUrl { Interface = Interface, Method = "UpToDateCheck", Version = 1 };
             url.Parameters.Add(new Parameter { Name = "appid", Value = appId.ToString(CultureInfo.InvariantCulture) });
             url.Parameters.Add(new Parameter { Name = "version", Value = version.ToString(CultureInfo.InvariantCulture) });
             return GetParsedResponse<UpToDateCheckResponse>(url);
         }
-      
+
     }
 }

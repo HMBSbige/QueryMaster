@@ -25,19 +25,17 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
-using Newtonsoft.Json;
-using System;
+
+using QueryMaster.Steam.DataObjects.IPlayerService;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster.Steam
+namespace QueryMaster.Steam.Interfaces
 {
     /// <summary>
     /// Represents the IPlayerService interface.
     /// </summary>
-    public class IPlayerService : InterfaceBase 
+    public class IPlayerService : InterfaceBase
     {
         internal IPlayerService()
         {
@@ -50,7 +48,7 @@ namespace QueryMaster.Steam
         /// <param name="steamId">The 64-bit SteamID of the player.</param>
         /// /// <param name="count">The number of games to return.</param>
         /// <returns>Instance of <see cref="GetRecentlyPlayedGamesResponse"/>.</returns>
-        public GetRecentlyPlayedGamesResponse GetRecentlyPlayedGames(ulong steamId,uint count=0)
+        public GetRecentlyPlayedGamesResponse GetRecentlyPlayedGames(ulong steamId, uint count = 0)
         {
             SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetRecentlyPlayedGames", Version = 1, AppendKey = true };
             url.Parameters.Add(new Parameter { Name = "steamid", Value = steamId.ToString(CultureInfo.InvariantCulture) });
@@ -61,8 +59,8 @@ namespace QueryMaster.Steam
             else
                 foreach (var i in response.ParsedResponse.Games)
                 {
-                    i.IconUrl = String.IsNullOrWhiteSpace(i.IconUrl) ? string.Empty : "http://media.steampowered.com/steamcommunity/public/images/apps/" + i.AppId + "/" + i.IconUrl + ".jpg";
-                    i.LogoUrl = String.IsNullOrWhiteSpace(i.IconUrl) ? string.Empty : "http://media.steampowered.com/steamcommunity/public/images/apps/" + i.AppId + "/" + i.LogoUrl + ".jpg";
+                    i.IconUrl = string.IsNullOrWhiteSpace(i.IconUrl) ? string.Empty : "http://media.steampowered.com/steamcommunity/public/images/apps/" + i.AppId + "/" + i.IconUrl + ".jpg";
+                    i.LogoUrl = string.IsNullOrWhiteSpace(i.IconUrl) ? string.Empty : "http://media.steampowered.com/steamcommunity/public/images/apps/" + i.AppId + "/" + i.LogoUrl + ".jpg";
                 }
             return response;
         }
@@ -75,13 +73,13 @@ namespace QueryMaster.Steam
         /// <param name="IncludeFreeGames">Whether or not to include free games.</param>
         /// <param name="filters">Restricts results to contain only mentioned appids.</param>
         /// <returns>Instance of <see cref="GetOwnedGamesResponse"/>.</returns>
-        public GetOwnedGamesResponse GetOwnedGames(ulong steamId, bool includeAppInfo = true ,bool IncludeFreeGames=true,params uint[] filters)
+        public GetOwnedGamesResponse GetOwnedGames(ulong steamId, bool includeAppInfo = true, bool IncludeFreeGames = true, params uint[] filters)
         {
             SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetOwnedGames", Version = 1, AppendKey = true };
             url.Parameters.Add(new Parameter { Name = "steamid", Value = steamId.ToString(CultureInfo.InvariantCulture) });
             url.Parameters.Add(new Parameter { Name = "include_appinfo", Value = includeAppInfo.ToString() });
             url.Parameters.Add(new Parameter { Name = "include_played_free_games", Value = IncludeFreeGames.ToString() });
-            for (int i = 0; i < filters.Length;i++ )
+            for (int i = 0; i < filters.Length; i++)
             {
                 url.Parameters.Add(new Parameter { Name = "appids_filter[" + i + "]", Value = filters[i].ToString(CultureInfo.InvariantCulture) });
             }
@@ -91,8 +89,8 @@ namespace QueryMaster.Steam
             else
                 foreach (var i in response.ParsedResponse.Games)
                 {
-                    i.IconUrl = String.IsNullOrWhiteSpace(i.IconUrl) ? string.Empty : "http://media.steampowered.com/steamcommunity/public/images/apps/" + i.AppId + "/" + i.IconUrl + ".jpg";
-                    i.LogoUrl = String.IsNullOrWhiteSpace(i.IconUrl) ? string.Empty : "http://media.steampowered.com/steamcommunity/public/images/apps/" + i.AppId + "/" + i.LogoUrl + ".jpg";
+                    i.IconUrl = string.IsNullOrWhiteSpace(i.IconUrl) ? string.Empty : "http://media.steampowered.com/steamcommunity/public/images/apps/" + i.AppId + "/" + i.IconUrl + ".jpg";
+                    i.LogoUrl = string.IsNullOrWhiteSpace(i.IconUrl) ? string.Empty : "http://media.steampowered.com/steamcommunity/public/images/apps/" + i.AppId + "/" + i.LogoUrl + ".jpg";
                 }
             return response;
         }

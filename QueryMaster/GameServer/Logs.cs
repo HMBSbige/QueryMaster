@@ -25,17 +25,13 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net.Sockets;
-using System.Text.RegularExpressions;
 using System.Net;
-using System.Globalization;
-using System.Threading;
-using QueryMaster;
-using System.Threading.Tasks;
+using System.Net.Sockets;
+using System.Text;
+
 namespace QueryMaster.GameServer
 {
     /// <summary>
@@ -50,18 +46,18 @@ namespace QueryMaster.GameServer
     public class Logs : QueryMasterBase
     {
         Socket UdpSocket;
-        internal IPEndPoint ServerEndPoint = null;
+        internal IPEndPoint ServerEndPoint;
         internal LogCallback Callback;
         private readonly int BufferSize = 1400;
         private byte[] recvData;
         private int Port;
-        private int HeaderSize = 0;
+        private int HeaderSize;
         private List<LogEvents> EventsInstanceList = new List<LogEvents>();
         /// <summary>
         /// Gets a value that indicates whether its listening.
         /// </summary>
         public bool IsListening { get; private set; }
-        
+
         internal Logs(EngineType type, int port, IPEndPoint serverEndPoint)
         {
             Port = port;
@@ -122,12 +118,12 @@ namespace QueryMaster.GameServer
             EventsInstanceList.Add(eventObj);
             return eventObj;
         }
-       
+
         protected override void Dispose(bool disposing)
         {
-            if(!IsDisposed)
+            if (!IsDisposed)
             {
-                if(disposing)
+                if (disposing)
                 {
                     if (UdpSocket != null)
                         UdpSocket.Close();
@@ -156,14 +152,14 @@ namespace QueryMaster.GameServer
             {
                 string logLine = Encoding.UTF8.GetString(recvData, HeaderSize, bytesRecv - HeaderSize);
                 if (Callback != null)
-                    Callback(String.Copy(logLine));
+                    Callback(string.Copy(logLine));
                 foreach (LogEvents i in EventsInstanceList)
                 {
-                    i.ProcessLog(String.Copy(logLine));
+                    i.ProcessLog(string.Copy(logLine));
                 }
             }
             UdpSocket.BeginReceive(recvData, 0, recvData.Length, SocketFlags.None, Recv, null);
         }
-        
+
     }
 }

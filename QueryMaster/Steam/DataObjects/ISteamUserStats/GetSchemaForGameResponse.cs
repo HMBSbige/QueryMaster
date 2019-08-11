@@ -25,25 +25,23 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster.Steam
+namespace QueryMaster.Steam.DataObjects.ISteamUserStats
 {
     /// <summary>
     /// Contains response of GetSchemaForGame method.
     /// </summary>
     [Serializable]
-   public class GetSchemaForGameResponse : SteamResponse 
+    public class GetSchemaForGameResponse : SteamResponse
     {
         /// <summary>
         /// Parsed response.
         /// </summary>
-       [JsonProperty("game")]
-       public GetSchemaForGameResponseGame ParsedResponse { get; internal set; }
+        [JsonProperty("game")]
+        public GetSchemaForGameResponseGame ParsedResponse { get; internal set; }
     }
 
     [Serializable]
@@ -82,64 +80,64 @@ namespace QueryMaster.Steam
     }
 
     [Serializable]
-   public class GetSchemaForGameResponseStat : DataObject
-   {
-       /// <summary>
-       /// API name of stat.
-       /// </summary>
-       [JsonProperty("name")]
-       public string Name { get; internal set; }
-       /// <summary>
-       /// Default value of stat. 
-       /// </summary>
-       [JsonProperty("defaultvalue")]
-       public ulong DefaultValue { get; internal set; }
-       /// <summary>
-       /// Developer provided name of string. 
-       /// </summary>
-       [JsonProperty("displayName")]
-       public string DisplayName { get; internal set; }
-   }
+    public class GetSchemaForGameResponseStat : DataObject
+    {
+        /// <summary>
+        /// API name of stat.
+        /// </summary>
+        [JsonProperty("name")]
+        public string Name { get; internal set; }
+        /// <summary>
+        /// Default value of stat. 
+        /// </summary>
+        [JsonProperty("defaultvalue")]
+        public ulong DefaultValue { get; internal set; }
+        /// <summary>
+        /// Developer provided name of string. 
+        /// </summary>
+        [JsonProperty("displayName")]
+        public string DisplayName { get; internal set; }
+    }
 
     [Serializable]
-   public class GetSchemaForGameResponseAchievement : DataObject
-   {
-       /// <summary>
-       /// API Name of achievement. 
-       /// </summary>
-       [JsonProperty("name")]
-       public string Name { get; internal set; }
-       /// <summary>
-       /// Always 0 (player's default state is unachieved). 
-       /// </summary>
-       [JsonProperty("defaultvalue")]
-       public int DefaultValue { get; internal set; }
-       /// <summary>
-       /// Display title string of achievement. 
-       /// </summary>
-       [JsonProperty("displayName")]
-       public string displayName { get; internal set; }
-       /// <summary>
-       /// If achievement is hidden to the user before earning achievement.
-       /// </summary>
-       [JsonProperty("hidden")]
-       public bool IsHidden { get; internal set; }
-       /// <summary>
-       /// Display description string of achievement. 
-       /// </summary>
-       [JsonProperty("description")]
-       public string Description { get; internal set; }
-       /// <summary>
-       /// Absolute URL of earned achievement icon art. 
-       /// </summary>
-       [JsonProperty("icon")]
-       public string Icon { get; internal set; }
-       /// <summary>
-       /// Absolute URL of un-earned achievement icon art. 
-       /// </summary>
-       [JsonProperty("icongray")]
-       public string IconGray { get; internal set; }
-   }
+    public class GetSchemaForGameResponseAchievement : DataObject
+    {
+        /// <summary>
+        /// API Name of achievement. 
+        /// </summary>
+        [JsonProperty("name")]
+        public string Name { get; internal set; }
+        /// <summary>
+        /// Always 0 (player's default state is unachieved). 
+        /// </summary>
+        [JsonProperty("defaultvalue")]
+        public int DefaultValue { get; internal set; }
+        /// <summary>
+        /// Display title string of achievement. 
+        /// </summary>
+        [JsonProperty("displayName")]
+        public string displayName { get; internal set; }
+        /// <summary>
+        /// If achievement is hidden to the user before earning achievement.
+        /// </summary>
+        [JsonProperty("hidden")]
+        public bool IsHidden { get; internal set; }
+        /// <summary>
+        /// Display description string of achievement. 
+        /// </summary>
+        [JsonProperty("description")]
+        public string Description { get; internal set; }
+        /// <summary>
+        /// Absolute URL of earned achievement icon art. 
+        /// </summary>
+        [JsonProperty("icon")]
+        public string Icon { get; internal set; }
+        /// <summary>
+        /// Absolute URL of un-earned achievement icon art. 
+        /// </summary>
+        [JsonProperty("icongray")]
+        public string IconGray { get; internal set; }
+    }
 
 
 

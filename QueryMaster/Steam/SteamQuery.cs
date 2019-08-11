@@ -1,5 +1,4 @@
-﻿
-#region License
+﻿#region License
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -25,76 +24,74 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
+using QueryMaster.Steam.Interfaces;
 
 namespace QueryMaster.Steam
 {
     /// <summary>
     /// Represents Steam's web api interface.
     /// </summary>
-   public class SteamQuery
+    public class SteamQuery
     {
-       /// <summary>
+        /// <summary>
         /// Initializes Steam's web api interface. 
-       /// </summary>
-       /// <param name="apiKey">Api key.</param>
-       public SteamQuery(string apiKey="")
-       {
-           ApiKey = apiKey;
-       }
-       /// <summary>
-       /// Api key.
-       /// </summary>
-       public string ApiKey { get { return SteamUrl.ApiKey; } set { SteamUrl.ApiKey = value; } }
-       private ISteamApps iSteamApps = null;
-       /// <summary>
-       /// Represents the ISteamApps interface.
-       /// </summary>
-       public ISteamApps ISteamApps { get { if (iSteamApps == null)iSteamApps = new ISteamApps(); return iSteamApps; } }
+        /// </summary>
+        /// <param name="apiKey">Api key.</param>
+        public SteamQuery(string apiKey = "")
+        {
+            ApiKey = apiKey;
+        }
+        /// <summary>
+        /// Api key.
+        /// </summary>
+        public string ApiKey { get { return SteamUrl.ApiKey; } set { SteamUrl.ApiKey = value; } }
+        private ISteamApps iSteamApps;
+        /// <summary>
+        /// Represents the ISteamApps interface.
+        /// </summary>
+        public ISteamApps ISteamApps { get { if (iSteamApps == null) iSteamApps = new ISteamApps(); return iSteamApps; } }
 
-       private ISteamNews iSteamNews = null;
-       /// <summary>
-       /// Represents the ISteamNews interface.
-       /// </summary>
-       public ISteamNews ISteamNews { get { if (iSteamNews == null)iSteamNews = new ISteamNews(); return iSteamNews; } }
+        private ISteamNews iSteamNews;
+        /// <summary>
+        /// Represents the ISteamNews interface.
+        /// </summary>
+        public ISteamNews ISteamNews { get { if (iSteamNews == null) iSteamNews = new ISteamNews(); return iSteamNews; } }
 
-       private ISteamUser iSteamUser = null;
-       /// <summary>
-       /// Represents the ISteamUser interface.
-       /// </summary>
-       public ISteamUser ISteamUser { get { if (iSteamUser == null)iSteamUser = new ISteamUser(); return iSteamUser; } }
+        private ISteamUser iSteamUser;
+        /// <summary>
+        /// Represents the ISteamUser interface.
+        /// </summary>
+        public ISteamUser ISteamUser { get { if (iSteamUser == null) iSteamUser = new ISteamUser(); return iSteamUser; } }
 
-       private ISteamUserStats iSteamUserStats = null;
-       /// <summary>
-       /// Represents the ISteamUserStats interface.
-       /// </summary>
-       public ISteamUserStats ISteamUserStats { get { if (iSteamUserStats == null)iSteamUserStats = new ISteamUserStats(); return iSteamUserStats; } }
+        private ISteamUserStats iSteamUserStats;
+        /// <summary>
+        /// Represents the ISteamUserStats interface.
+        /// </summary>
+        public ISteamUserStats ISteamUserStats { get { if (iSteamUserStats == null) iSteamUserStats = new ISteamUserStats(); return iSteamUserStats; } }
 
-       private ISteamWebApiUtil iSteamWebApiUtil = null;
-       /// <summary>
-       /// Represents the ISteamWebAPIUtil interface.
-       /// </summary>
-       public ISteamWebApiUtil ISteamWebApiUtil { get { if (iSteamWebApiUtil == null)iSteamWebApiUtil = new ISteamWebApiUtil(); return iSteamWebApiUtil; } }
+        private ISteamWebApiUtil iSteamWebApiUtil;
+        /// <summary>
+        /// Represents the ISteamWebAPIUtil interface.
+        /// </summary>
+        public ISteamWebApiUtil ISteamWebApiUtil { get { if (iSteamWebApiUtil == null) iSteamWebApiUtil = new ISteamWebApiUtil(); return iSteamWebApiUtil; } }
 
-       private ISteamDirectory iSteamDirectory = null;
-       /// <summary>
-       /// Represents the ISteamDirectory interface.
-       /// </summary>
-       public ISteamDirectory ISteamDirectory { get { if (iSteamDirectory == null)iSteamDirectory = new ISteamDirectory(); return iSteamDirectory; } }
+        private ISteamDirectory iSteamDirectory;
+        /// <summary>
+        /// Represents the ISteamDirectory interface.
+        /// </summary>
+        public ISteamDirectory ISteamDirectory { get { if (iSteamDirectory == null) iSteamDirectory = new ISteamDirectory(); return iSteamDirectory; } }
 
-       private IPlayerService iPlayerService = null;
-       /// <summary>
-       /// Represents the IPlayerService interface.
-       /// </summary>
-       public IPlayerService IPlayerService { get { if (iPlayerService == null)iPlayerService = new IPlayerService(); return iPlayerService; } }
-       private ISteamGroup iSteamGroup = null;
-       /// <summary>
-       ///  Represents the ISteamGroup interface(not part of steam's web api).
-       /// </summary>
-       public ISteamGroup ISteamGroup { get { if (iSteamGroup == null)iSteamGroup = new ISteamGroup(); return iSteamGroup; } }
+        private IPlayerService iPlayerService;
+        /// <summary>
+        /// Represents the IPlayerService interface.
+        /// </summary>
+        public IPlayerService IPlayerService { get { if (iPlayerService == null) iPlayerService = new IPlayerService(); return iPlayerService; } }
+        private ISteamGroup iSteamGroup;
+        /// <summary>
+        ///  Represents the ISteamGroup interface(not part of steam's web api).
+        /// </summary>
+        public ISteamGroup ISteamGroup { get { if (iSteamGroup == null) iSteamGroup = new ISteamGroup(); return iSteamGroup; } }
 
-   }
+    }
 }

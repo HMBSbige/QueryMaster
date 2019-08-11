@@ -25,39 +25,38 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster.Steam
+using Newtonsoft.Json;
+using QueryMaster.JsonConverters;
+using System;
+
+namespace QueryMaster.Steam.DataObjects.ISteamUserStats
 {
     /// <summary>
     /// Contains response of GetGlobalStatsForGame method.
     /// </summary>
     [Serializable]
-   public class GetGlobalStatsForGameResponse : SteamResponse 
+    public class GetGlobalStatsForGameResponse : SteamResponse
     {
         /// <summary>
         /// Parsed response.
         /// </summary>
         [JsonProperty("response")]
-       public GetGlobalStatsForGameResponseResult ParsedResponse { get; internal set; }
+        public GetGlobalStatsForGameResponseResult ParsedResponse { get; internal set; }
     }
 
     [Serializable]
-   public class GetGlobalStatsForGameResponseResult : DataObject
+    public class GetGlobalStatsForGameResponseResult : DataObject
     {
         /// <summary>
         /// Collection of <see cref="GetGlobalStatsForGameResponseStat"/> instances.
         /// </summary>
-        [JsonProperty("globalstats"),JsonConverter(typeof(GetGlobalStatsForGameResponseStatConverter))]
-       public QueryMasterCollection<GetGlobalStatsForGameResponseStat> Stats { get; internal set; }
+        [JsonProperty("globalstats"), JsonConverter(typeof(GetGlobalStatsForGameResponseStatConverter))]
+        public QueryMasterCollection<GetGlobalStatsForGameResponseStat> Stats { get; internal set; }
     }
 
     [Serializable]
-   public class GetGlobalStatsForGameResponseStat : DataObject
+    public class GetGlobalStatsForGameResponseStat : DataObject
     {
         /// <summary>
         /// The name of the requested stat.

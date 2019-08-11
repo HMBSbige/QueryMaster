@@ -1,5 +1,4 @@
-﻿
-#region License
+﻿#region License
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -25,13 +24,8 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
 
-namespace QueryMaster.MasterServer
+namespace QueryMaster.MasterServer.DataObjects
 {
     /// <summary>
     /// Allows you to restrict the results to servers running a certain game.

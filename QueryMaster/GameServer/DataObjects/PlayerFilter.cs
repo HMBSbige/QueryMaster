@@ -25,65 +25,63 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
+
 using System.Text;
 
-namespace QueryMaster.GameServer
+namespace QueryMaster.GameServer.DataObjects
 {
     /// <summary>
     /// Represents a filter that filters by player.
     /// </summary>
-   public class PlayerFilter:LogFilter 
+    public class PlayerFilter : LogFilter
     {
-       /// <summary>
-       /// Name of the player.
-       /// </summary>
-       public string Name { get; set; }
-       /// <summary>
-       /// User id of the player.
-       /// </summary>
-       public string  UserId { get; set; }
-       /// <summary>
-       /// SteamId of the player.
-       /// </summary>
-       public string SteamId { get; set; }
-       /// <summary>
-       /// Team in which the player is in.
-       /// </summary>
-       public string Team { get; set; }
-       /// <summary>
-       /// Creates a regex filter pattern based on name,userid,steamid and team. 
-       /// </summary>
-       /// <returns>Regex filter pattern.</returns>
-       public override string ToString()
-       {
-           if(string.IsNullOrEmpty(FilterString))
-           {
-               StringBuilder strBuilder = new StringBuilder("^.*");
-               if (!string.IsNullOrEmpty(Name))
-                   strBuilder.Append(Name);
-               strBuilder.Append("<");
-               if (string.IsNullOrEmpty(UserId))
-                   strBuilder.Append("\\d+");
-               else
-                  strBuilder.Append(UserId);
-               strBuilder.Append("><");
-               if (string.IsNullOrEmpty(SteamId))
-                   strBuilder.Append(".+");
-               else
-                  strBuilder.Append(SteamId);
-               strBuilder.Append("><");
-               if (string.IsNullOrEmpty(Team))
-                   strBuilder.Append(".*");
-               else
-                   strBuilder.Append(Team);
-               strBuilder.Append(">.*$");
-               FilterString = strBuilder.ToString();
-           }
-  
-           return FilterString;
-       }
+        /// <summary>
+        /// Name of the player.
+        /// </summary>
+        public string Name { get; set; }
+        /// <summary>
+        /// User id of the player.
+        /// </summary>
+        public string UserId { get; set; }
+        /// <summary>
+        /// SteamId of the player.
+        /// </summary>
+        public string SteamId { get; set; }
+        /// <summary>
+        /// Team in which the player is in.
+        /// </summary>
+        public string Team { get; set; }
+        /// <summary>
+        /// Creates a regex filter pattern based on name,userid,steamid and team. 
+        /// </summary>
+        /// <returns>Regex filter pattern.</returns>
+        public override string ToString()
+        {
+            if (string.IsNullOrEmpty(FilterString))
+            {
+                StringBuilder strBuilder = new StringBuilder("^.*");
+                if (!string.IsNullOrEmpty(Name))
+                    strBuilder.Append(Name);
+                strBuilder.Append("<");
+                if (string.IsNullOrEmpty(UserId))
+                    strBuilder.Append("\\d+");
+                else
+                    strBuilder.Append(UserId);
+                strBuilder.Append("><");
+                if (string.IsNullOrEmpty(SteamId))
+                    strBuilder.Append(".+");
+                else
+                    strBuilder.Append(SteamId);
+                strBuilder.Append("><");
+                if (string.IsNullOrEmpty(Team))
+                    strBuilder.Append(".*");
+                else
+                    strBuilder.Append(Team);
+                strBuilder.Append(">.*$");
+                FilterString = strBuilder.ToString();
+            }
+
+            return FilterString;
+        }
     }
 }

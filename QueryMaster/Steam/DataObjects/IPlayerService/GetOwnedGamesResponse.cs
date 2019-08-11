@@ -25,41 +25,40 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster.Steam
+using Newtonsoft.Json;
+using QueryMaster.JsonConverters;
+using System;
+
+namespace QueryMaster.Steam.DataObjects.IPlayerService
 {
     /// <summary>
     /// Contains response of GetOwnedGames method.
     /// </summary>
     [Serializable]
-   public class GetOwnedGamesResponse : SteamResponse
+    public class GetOwnedGamesResponse : SteamResponse
     {
         /// <summary>
         /// Parsed response.
         /// </summary>
-       [JsonProperty("response")]
-       public GetOwnedGamesResponseResponse ParsedResponse { get; internal set; }
+        [JsonProperty("response")]
+        public GetOwnedGamesResponseResponse ParsedResponse { get; internal set; }
     }
 
     [Serializable]
-   public class GetOwnedGamesResponseResponse : DataObject
-   {
+    public class GetOwnedGamesResponseResponse : DataObject
+    {
         /// <summary>
-       /// Total number of games.
+        /// Total number of games.
         /// </summary>
         [JsonProperty("game_count")]
-       public uint Count { get; internal set; }
+        public uint Count { get; internal set; }
         /// <summary>
         /// Collection of <see cref="GetOwnedGamesResponseGame"/> instances.
         /// </summary>
         [JsonProperty("games")]
-       public QueryMasterCollection<GetOwnedGamesResponseGame> Games { get; internal set; }
-   }
+        public QueryMasterCollection<GetOwnedGamesResponseGame> Games { get; internal set; }
+    }
 
     [Serializable]
     public class GetOwnedGamesResponseGame : DataObject

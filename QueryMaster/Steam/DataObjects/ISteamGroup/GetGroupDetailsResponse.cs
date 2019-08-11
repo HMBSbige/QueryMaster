@@ -25,19 +25,17 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster.Steam
+namespace QueryMaster.Steam.DataObjects.ISteamGroup
 {
     /// <summary>
     /// Contains response of GetGroupDetails method.
     /// </summary>
     [Serializable]
-   public class GetGroupDetailsResponse : SteamResponse
+    public class GetGroupDetailsResponse : SteamResponse
     {
         /// <summary>
         /// Parsed response.
@@ -51,7 +49,7 @@ namespace QueryMaster.Steam
         /// <returns></returns>
         public override string GetRawResponse(Format format)
         {
-            switch(format)
+            switch (format)
             {
                 case Format.Json: return string.Empty;
                 case Format.Vdf: return string.Empty;
@@ -95,7 +93,7 @@ namespace QueryMaster.Steam
         [JsonProperty("steamID64")]
         public QueryMasterCollection<ulong> Members { get; set; }
     }
-   
+
     [Serializable]
     public class GetGroupDetailsResponseDetails : DataObject
     {

@@ -25,11 +25,11 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
+using QueryMaster.MasterServer.DataObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Collections.ObjectModel;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -48,13 +48,13 @@ namespace QueryMaster.MasterServer
     public class Server : QueryMasterBase
     {
         private static readonly int BufferSize = 1400;
-        private IPEndPoint SeedEndpoint = new IPEndPoint(IPAddress.Parse("0.0.0.0"), 0), RemoteEndPoint = new IPEndPoint(IPAddress.Any, 0), lastEndPoint = null;        
+        private IPEndPoint SeedEndpoint = new IPEndPoint(IPAddress.Parse("0.0.0.0"), 0), RemoteEndPoint = new IPEndPoint(IPAddress.Any, 0), lastEndPoint;
         private BatchReceivedCallback Callback;
         private ErrorCallback ErrorCallback;
         private AttemptCallback AttemptCallback;
         private IpFilter filter;
-        private Socket Socket = null;
-        private int BatchCount = 0;
+        private Socket Socket;
+        private int BatchCount;
         private CancellationTokenSource cts;
         private ConnectionInfo ConInfo;
         private Region region;
@@ -64,7 +64,7 @@ namespace QueryMaster.MasterServer
         /// </summary>
         public Region Region { get { return region; } }
 
-        internal Server(ConnectionInfo conInfo,AttemptCallback attemptCallback)
+        internal Server(ConnectionInfo conInfo, AttemptCallback attemptCallback)
         {
             ConInfo = conInfo;
             AttemptCallback = attemptCallback;
@@ -97,7 +97,7 @@ namespace QueryMaster.MasterServer
         /// </summary>
         /// <param name="batchCount">Number of batches to fetch.-1 would return all addressess.(1 batch = 1 udppacket = 231 addressess).</param>
         /// <param name="refresh">Whether to clear internal state and obtain addresses from start.</param>
-        public void GetNextBatch(int batchCount=1,bool refresh=false)
+        public void GetNextBatch(int batchCount = 1, bool refresh = false)
         {
             ThrowIfDisposed();
             TaskList.Add(TaskList.Last().ContinueWith(x =>
@@ -112,12 +112,12 @@ namespace QueryMaster.MasterServer
                      lastEndPoint = null;
                  else
                      if (lastEndPoint.Equals(SeedEndpoint))
-                     {
-                         if(cts !=null)
-                            cts.Cancel();
-                        throw new MasterServerException("Already received all the addresses.");
-                     }
-                 BatchCount = batchCount == -1 ? int.MaxValue : batchCount; 
+                 {
+                     if (cts != null)
+                         cts.Cancel();
+                     throw new MasterServerException("Already received all the addresses.");
+                 }
+                 BatchCount = batchCount == -1 ? int.MaxValue : batchCount;
                  StartReceiving();
              }));
         }
@@ -155,12 +155,12 @@ namespace QueryMaster.MasterServer
                     hasRecvMsg = false;
                     if (IsNewMsg)
                     {
-                        msg = MasterUtil.BuildPacket(endPoint.ToString(), region , filter);
+                        msg = MasterUtil.BuildPacket(endPoint.ToString(), region, filter);
                         recvBytes = new byte[BufferSize];
                         IsNewMsg = false;
                     }
                     try
-                    {                       
+                    {
                         attemptCounter++;
                         if (AttemptCallback != null)
                             ThreadPool.QueueUserWorkItem(x => AttemptCallback(attemptCounter));
@@ -201,19 +201,19 @@ namespace QueryMaster.MasterServer
                             endPoints.RemoveAt(endPoints.Count - 1);
                             isLastBatch = true;
                         }
-                        Callback(new BatchInfo 
+                        Callback(new BatchInfo
                         {
-                            Region = Region, 
+                            Region = Region,
                             Source = ConInfo.EndPoint,
                             ReceivedEndpoints = new QueryMasterCollection<IPEndPoint>(endPoints),
-                            IsLastBatch=isLastBatch
+                            IsLastBatch = isLastBatch
                         });
                         if (isLastBatch)
                         {
                             cts.Cancel();
                             break;
                         }
-                        
+
                     }
                     cts.Token.ThrowIfCancellationRequested();
                 }
@@ -234,7 +234,7 @@ namespace QueryMaster.MasterServer
         {
             if (TaskList.Count != 0)
             {
-                if(cts !=null)
+                if (cts != null)
                     cts.Cancel();
                 if (Socket != null)
                     Socket.Dispose();

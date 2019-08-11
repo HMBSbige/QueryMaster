@@ -25,9 +25,9 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Text;
 
@@ -43,7 +43,7 @@ namespace QueryMaster
     /// </summary>
     /// <param name="attempt"></param>
     public delegate void AttemptCallback(int attempt);
-  internal static class Util
+    internal static class Util
     {
         private static Dictionary<string, ushort> GoldSourceGames = new Dictionary<string, ushort>
        {
@@ -57,16 +57,16 @@ namespace QueryMaster
             { "Condition Zero",80},
             { "Counter-Strike 1.6 dedicated server",90},
             {"Condition Zero Deleted Scenes",100},
-            {"Half-Life: Blue Shift",130},
+            {"Half-Life: Blue Shift",130}
        };
 
-        internal static  int[] ShipIds = new int[] {2400, 2401, 2402, 2412, 2430, 2406, 2405 };
+        internal static int[] ShipIds = { 2400, 2401, 2402, 2412, 2430, 2406, 2405 };
 
         internal static ushort GetGameId(string name)
         {
             ushort id = 0;
             if (GoldSourceGames.ContainsKey(name))
-                id= GoldSourceGames[name];
+                id = GoldSourceGames[name];
             return id;
         }
 
@@ -75,7 +75,7 @@ namespace QueryMaster
             return Encoding.UTF8.GetString(bytes);
         }
 
-        internal static string BytesToString(byte[] bytes, int index , int count )
+        internal static string BytesToString(byte[] bytes, int index, int count)
         {
             return Encoding.UTF8.GetString(bytes, index, count);
         }

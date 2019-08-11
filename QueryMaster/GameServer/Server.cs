@@ -25,17 +25,15 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
+using QueryMaster.GameServer.DataObjects;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
 using System.Diagnostics;
-using System.Collections.ObjectModel;
-using System.Net.Sockets;
-using QueryMaster;
-using System.Threading;
 using System.Globalization;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 
 namespace QueryMaster.GameServer
 {
@@ -46,15 +44,15 @@ namespace QueryMaster.GameServer
     {
         private EngineType Type;
         private long Latency;
-        private Logs logs=null;
-        private byte[] PlayerChallengeId = null;
-        private byte[] RuleChallengeId = null;
+        private Logs logs;
+        private byte[] PlayerChallengeId;
+        private byte[] RuleChallengeId;
         private bool IsPlayerChallengeId;
         private bool IsRuleChallengeId;
         private Rcon rcon = null;
 
-        internal UdpQuery UdpSocket =null;
-        internal ConnectionInfo ConInfo = null;
+        internal UdpQuery UdpSocket;
+        internal ConnectionInfo ConInfo;
         /// <summary>
         /// Server Endpoint.
         /// </summary>
@@ -62,7 +60,7 @@ namespace QueryMaster.GameServer
         /// <summary>
         /// Provides method(s) to perform admin level operations.
         /// </summary>
-        public Rcon Rcon { get; protected set;}
+        public Rcon Rcon { get; protected set; }
 
         /// <summary>
         /// Returns true if server replies only to half life protocol messages.
@@ -101,7 +99,7 @@ namespace QueryMaster.GameServer
                 }
                 catch (SocketException e)
                 {
-                    if (e.SocketErrorCode  == SocketError.TimedOut)
+                    if (e.SocketErrorCode == SocketError.TimedOut)
                         IsObsolete = false;
                 }
             }
@@ -117,7 +115,7 @@ namespace QueryMaster.GameServer
         public virtual ServerInfo GetInfo(AttemptCallback callback = null)
         {
             ThrowIfDisposed();
-            return Invoke<ServerInfo>(getInfo, ConInfo.Retries + 1,callback,ConInfo.ThrowExceptions);
+            return Invoke(getInfo, ConInfo.Retries + 1, callback, ConInfo.ThrowExceptions);
         }
 
         private ServerInfo getInfo()
@@ -169,30 +167,30 @@ namespace QueryMaster.GameServer
             server.Players = parser.ReadByte();
             server.MaxPlayers = parser.ReadByte();
             server.Bots = parser.ReadByte();
-            server.ServerType = (new Func<GameServertype>(() => 
-            { 
-                switch ((char)parser.ReadByte()) 
-                { 
-                    case 'l':return GameServertype.Listen; 
-                    case 'd':return GameServertype.Dedicated; 
-                    case 'p':return GameServertype.SourceTV;
+            server.ServerType = (new Func<GameServertype>(() =>
+            {
+                switch ((char)parser.ReadByte())
+                {
+                    case 'l': return GameServertype.Listen;
+                    case 'd': return GameServertype.Dedicated;
+                    case 'p': return GameServertype.SourceTV;
                 }
-                return GameServertype.Invalid; 
+                return GameServertype.Invalid;
             }))();
-            server.Environment = (new Func<GameEnvironment>(() => 
-            { 
-                switch ((char)parser.ReadByte()) 
-                { 
-                    case 'l':return GameEnvironment.Linux; 
-                    case 'w':return GameEnvironment.Windows; 
-                    case 'm':return GameEnvironment.Mac;
+            server.Environment = (new Func<GameEnvironment>(() =>
+            {
+                switch ((char)parser.ReadByte())
+                {
+                    case 'l': return GameEnvironment.Linux;
+                    case 'w': return GameEnvironment.Windows;
+                    case 'm': return GameEnvironment.Mac;
                     case 'o': return GameEnvironment.Mac;
                 }
-                return GameEnvironment.Invalid; 
+                return GameEnvironment.Invalid;
             }))();
             server.IsPrivate = parser.ReadByte() > 0;
             server.IsSecure = parser.ReadByte() > 0;
-            if ( Util.ShipIds.Contains(server.Id))
+            if (Util.ShipIds.Contains(server.Id))
             {
                 ShipInfo ship = new ShipInfo();
                 switch (parser.ReadByte())
@@ -203,7 +201,7 @@ namespace QueryMaster.GameServer
                     case 3: ship.Mode = ShipMode.Deathmatch; break;
                     case 4: ship.Mode = ShipMode.VIPTeam; break;
                     case 5: ship.Mode = ShipMode.TeamElimination; break;
-                    default: ship.Mode =ShipMode.Invalid; break;
+                    default: ship.Mode = ShipMode.Invalid; break;
                 }
                 ship.Witnesses = parser.ReadByte();
                 ship.Duration = parser.ReadByte();
@@ -218,7 +216,7 @@ namespace QueryMaster.GameServer
                 server.ExtraInfo.Port = (edf & 0x80) > 0 ? parser.ReadUShort() : (ushort)0;
                 server.ExtraInfo.SteamId = (edf & 0x10) > 0 ? parser.ReadULong() : 0;
                 if ((edf & 0x40) > 0)
-                    server.ExtraInfo.SpecInfo = new SourceTVInfo() { Port = parser.ReadUShort(), Name = parser.ReadString() };
+                    server.ExtraInfo.SpecInfo = new SourceTVInfo { Port = parser.ReadUShort(), Name = parser.ReadString() };
                 server.ExtraInfo.Keywords = (edf & 0x20) > 0 ? parser.ReadString() : string.Empty;
                 server.ExtraInfo.GameId = (edf & 0x10) > 0 ? parser.ReadULong() : 0;
             }
@@ -244,28 +242,28 @@ namespace QueryMaster.GameServer
             server.Players = parser.ReadByte();
             server.MaxPlayers = parser.ReadByte();
             server.Protocol = parser.ReadByte();
-            server.ServerType = (new Func<GameServertype>(() => 
+            server.ServerType = (new Func<GameServertype>(() =>
             {
-                switch (Char.ToUpper((char)parser.ReadByte(), CultureInfo.InvariantCulture)) 
-                { 
-                    case 'L':return GameServertype.NonDedicated; 
-                    case 'D':return GameServertype.Dedicated; 
-                    case 'P':return GameServertype.HLTVServer; 
-                } 
-                return GameServertype.Invalid; 
+                switch (char.ToUpper((char)parser.ReadByte(), CultureInfo.InvariantCulture))
+                {
+                    case 'L': return GameServertype.NonDedicated;
+                    case 'D': return GameServertype.Dedicated;
+                    case 'P': return GameServertype.HLTVServer;
+                }
+                return GameServertype.Invalid;
             }))();
-            server.Environment = (new Func<GameEnvironment>(() => 
-            { 
-                switch (Char.ToUpper((char)parser.ReadByte())) 
+            server.Environment = (new Func<GameEnvironment>(() =>
+            {
+                switch (char.ToUpper((char)parser.ReadByte()))
                 {
                     case 'L': return GameEnvironment.Linux;
-                    case 'W': return GameEnvironment.Windows; 
+                    case 'W': return GameEnvironment.Windows;
                 }
-                return GameEnvironment.Invalid; 
+                return GameEnvironment.Invalid;
             }))();
             server.IsPrivate = parser.ReadByte() > 0;
             byte mod = parser.ReadByte();
-            server.IsModded = mod > 0 ;
+            server.IsModded = mod > 0;
             if (server.IsModded)
             {
                 ModInfo modinfo = new ModInfo();
@@ -293,7 +291,7 @@ namespace QueryMaster.GameServer
         public virtual QueryMasterCollection<PlayerInfo> GetPlayers(AttemptCallback callback = null)
         {
             ThrowIfDisposed();
-            return Invoke<QueryMasterCollection<PlayerInfo>>(getPlayers, ConInfo.Retries + 1, callback, ConInfo.ThrowExceptions);
+            return Invoke(getPlayers, ConInfo.Retries + 1, callback, ConInfo.ThrowExceptions);
         }
 
         private QueryMasterCollection<PlayerInfo> getPlayers()
@@ -327,7 +325,7 @@ namespace QueryMaster.GameServer
                 for (int i = 0; i < playerCount; i++)
                 {
                     parser.ReadByte();
-                    players.Add(new PlayerInfo()
+                    players.Add(new PlayerInfo
                     {
                         Name = parser.ReadString(),
                         Score = parser.ReadInt(),
@@ -377,7 +375,7 @@ namespace QueryMaster.GameServer
         public virtual QueryMasterCollection<Rule> GetRules(AttemptCallback callback = null)
         {
             ThrowIfDisposed();
-            return Invoke<QueryMasterCollection<Rule>>(getRules, ConInfo.Retries + 1, callback, ConInfo.ThrowExceptions);
+            return Invoke(getRules, ConInfo.Retries + 1, callback, ConInfo.ThrowExceptions);
         }
 
         private QueryMasterCollection<Rule> getRules()
@@ -411,7 +409,7 @@ namespace QueryMaster.GameServer
                 rules = new List<Rule>(ruleCount);
                 for (int i = 0; i < ruleCount; i++)
                 {
-                    rules.Add(new Rule() { Name = parser.ReadString(), Value = parser.ReadString() });
+                    rules.Add(new Rule { Name = parser.ReadString(), Value = parser.ReadString() });
                 }
             }
             catch (Exception e)
@@ -457,7 +455,7 @@ namespace QueryMaster.GameServer
         public virtual Logs GetLogs(int port)
         {
             ThrowIfDisposed();
-            if(logs==null)
+            if (logs == null)
                 logs = new Logs(Type, port, EndPoint);
             return logs;
         }

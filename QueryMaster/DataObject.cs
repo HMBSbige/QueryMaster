@@ -25,11 +25,10 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using Newtonsoft.Json;
+using QueryMaster.ContractSolver;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster
 {
@@ -37,26 +36,26 @@ namespace QueryMaster
     /// Base of all data objects in this library.
     /// </summary>
     [Serializable]
-   public class DataObject
+    public class DataObject
     {
         [NonSerialized]
-        internal  JsonConverter[] Converters = null;
+        internal JsonConverter[] Converters = null;
         /// <summary>
         /// Returns Json string.
         /// </summary>
         /// <returns>Json string.</returns>
-       public override string ToString()
-       {
-           JsonSerializerSettings settings = new JsonSerializerSettings
-           {          
+        public override string ToString()
+        {
+            JsonSerializerSettings settings = new JsonSerializerSettings
+            {
                 ContractResolver = new OriginalNameContractResolver(),
-                Formatting= Formatting.Indented
-           };
+                Formatting = Formatting.Indented
+            };
 
-           if (Converters != null && Converters.Length > 0)
-               settings.Converters = Converters;
-           return JsonConvert.SerializeObject(this, settings);
-       }
+            if (Converters != null && Converters.Length > 0)
+                settings.Converters = Converters;
+            return JsonConvert.SerializeObject(this, settings);
+        }
 
     }
 }

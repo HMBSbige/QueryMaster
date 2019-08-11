@@ -1,5 +1,4 @@
-﻿
-#region License
+﻿#region License
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -25,17 +24,13 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster.GameServer
 {
     /// <summary>
     /// Provides methods to access server using rcon password.
     /// </summary>
-    public abstract class Rcon: QueryMasterBase
+    public abstract class Rcon : QueryMasterBase
     {
         /// <summary>
         /// Enable logging on server.
@@ -61,7 +56,7 @@ namespace QueryMaster.GameServer
         /// <param name="isMultiPacketResponse">Whether the reply could be/is larger than 1400 bytes.</param>
         /// <param name="callback">Called on every attempt made to send a command.</param>
         /// <returns>Reply from server in string format.</returns>
-        public abstract string SendCommand(string cmd, bool isMultiPacketResponse=false);
+        public abstract string SendCommand(string cmd, bool isMultiPacketResponse = false);
         /// <summary>
         /// Add a client socket to server's logaddress list.
         /// </summary>

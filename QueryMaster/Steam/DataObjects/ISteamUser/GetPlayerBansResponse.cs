@@ -25,13 +25,11 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster.Steam
+namespace QueryMaster.Steam.DataObjects.ISteamUser
 {
     /// <summary>
     /// Contains response of GetPlayerBans method.
@@ -57,7 +55,7 @@ namespace QueryMaster.Steam
     }
 
     [Serializable]
-    public class GetPlayerBansResponsePlayer : DataObject 
+    public class GetPlayerBansResponsePlayer : DataObject
     {
         /// <summary>
         /// Player's 64 bit steam ID.

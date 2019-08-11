@@ -25,99 +25,98 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster.Steam
+namespace QueryMaster.Steam.DataObjects.ISteamWebAPIUtil
 {
     /// <summary>
     /// Contains response of GetSupportedAPIList method.
     /// </summary>
     [Serializable]
-   public class GetSupportedAPIListResponse : SteamResponse 
+    public class GetSupportedAPIListResponse : SteamResponse
     {
         /// <summary>
         /// Parsed response.
         /// </summary>
-       [JsonProperty("apilist")]
-       public GetSupportedAPIListResponseApilist ParsedResponse { get; internal set; }
+        [JsonProperty("apilist")]
+        public GetSupportedAPIListResponseApilist ParsedResponse { get; internal set; }
     }
 
     [Serializable]
-   public class GetSupportedAPIListResponseApilist : DataObject
-   {
-       /// <summary>
-       /// Collection of <see cref="GetSupportedAPIListResponseInterface"/> instances.
-       /// </summary>
-       [JsonProperty("interfaces")]
-       public QueryMasterCollection<GetSupportedAPIListResponseInterface> Interfaces { get; internal set; }
-   }
+    public class GetSupportedAPIListResponseApilist : DataObject
+    {
+        /// <summary>
+        /// Collection of <see cref="GetSupportedAPIListResponseInterface"/> instances.
+        /// </summary>
+        [JsonProperty("interfaces")]
+        public QueryMasterCollection<GetSupportedAPIListResponseInterface> Interfaces { get; internal set; }
+    }
 
     [Serializable]
-   public class GetSupportedAPIListResponseInterface : DataObject
-   {
-       /// <summary>
-       /// Name of Interface. 
-       /// </summary>
-       [JsonProperty("name")]
-       public string Name { get; internal set; }
-       /// <summary>
-       /// Collection of <see cref="GetSupportedAPIListResponseMethod"/> instances.
-       /// </summary>
-       [JsonProperty("methods")]
-       public QueryMasterCollection<GetSupportedAPIListResponseMethod> Methods { get; internal set; }
-   }
+    public class GetSupportedAPIListResponseInterface : DataObject
+    {
+        /// <summary>
+        /// Name of Interface. 
+        /// </summary>
+        [JsonProperty("name")]
+        public string Name { get; internal set; }
+        /// <summary>
+        /// Collection of <see cref="GetSupportedAPIListResponseMethod"/> instances.
+        /// </summary>
+        [JsonProperty("methods")]
+        public QueryMasterCollection<GetSupportedAPIListResponseMethod> Methods { get; internal set; }
+    }
 
     [Serializable]
-   public class GetSupportedAPIListResponseMethod : DataObject
-   {
-       /// <summary>
-       /// Name of method. 
-       /// </summary>
-       [JsonProperty("name")]
-       public string Name { get; internal set; }
-       /// <summary>
-       /// Version of method.
-       /// </summary>
-       [JsonProperty("version")]
-       public int Version { get; internal set; }
-       /// <summary>
-       /// Allowed HTTP method for method (GET, POST). 
-       /// </summary>
-       [JsonProperty("httpmethod")]
-       public string HttpMethod { get; internal set; }
-       /// <summary>
-       /// Collection of <see cref="GetSupportedAPIListResponseParameter"/> instances.
-       /// </summary>
-       [JsonProperty("parameters")]
-       public List<GetSupportedAPIListResponseParameter> Parameters { get; internal set; }
-   }
+    public class GetSupportedAPIListResponseMethod : DataObject
+    {
+        /// <summary>
+        /// Name of method. 
+        /// </summary>
+        [JsonProperty("name")]
+        public string Name { get; internal set; }
+        /// <summary>
+        /// Version of method.
+        /// </summary>
+        [JsonProperty("version")]
+        public int Version { get; internal set; }
+        /// <summary>
+        /// Allowed HTTP method for method (GET, POST). 
+        /// </summary>
+        [JsonProperty("httpmethod")]
+        public string HttpMethod { get; internal set; }
+        /// <summary>
+        /// Collection of <see cref="GetSupportedAPIListResponseParameter"/> instances.
+        /// </summary>
+        [JsonProperty("parameters")]
+        public List<GetSupportedAPIListResponseParameter> Parameters { get; internal set; }
+    }
 
     [Serializable]
-   public class GetSupportedAPIListResponseParameter : DataObject
-   {
-       /// <summary>
-       /// Name of parameter. 
-       /// </summary>
-       [JsonProperty("name")]
-       public string Name { get; internal set; }
-       /// <summary>
-       /// Expected type of value. 
-       /// </summary>
-       [JsonProperty("type")]
-       public string Type { get; internal set; }
-       /// <summary>
-       /// Is input optional for the method. 
-       /// </summary>
-       [JsonProperty("optional")]
-       public bool IsOptional { get; internal set; }
-       /// <summary>
-       /// API Documentation of parameter. 
-       /// </summary>
-       [JsonProperty("description")]
-       public string Description { get; internal set; }
-   }
+    public class GetSupportedAPIListResponseParameter : DataObject
+    {
+        /// <summary>
+        /// Name of parameter. 
+        /// </summary>
+        [JsonProperty("name")]
+        public string Name { get; internal set; }
+        /// <summary>
+        /// Expected type of value. 
+        /// </summary>
+        [JsonProperty("type")]
+        public string Type { get; internal set; }
+        /// <summary>
+        /// Is input optional for the method. 
+        /// </summary>
+        [JsonProperty("optional")]
+        public bool IsOptional { get; internal set; }
+        /// <summary>
+        /// API Documentation of parameter. 
+        /// </summary>
+        [JsonProperty("description")]
+        public string Description { get; internal set; }
+    }
 }

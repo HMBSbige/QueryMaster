@@ -25,50 +25,48 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster.Steam
+namespace QueryMaster.Steam.DataObjects.ISteamUserStats
 {
     /// <summary>
     /// Contains response of GetGlobalAchievementPercentagesForApp method.
     /// </summary>
     [Serializable]
-   public class GetGlobalAchievementPercentagesForAppResponse : SteamResponse 
+    public class GetGlobalAchievementPercentagesForAppResponse : SteamResponse
     {
         /// <summary>
         /// Parsed response.
         /// </summary>
         [JsonProperty("achievementpercentages")]
-       public GetGlobalAchievementPercentagesForAppResponseAchievementpercentages ParsedResponse { get; internal set; }
+        public GetGlobalAchievementPercentagesForAppResponseAchievementpercentages ParsedResponse { get; internal set; }
     }
 
     [Serializable]
-   public class GetGlobalAchievementPercentagesForAppResponseAchievement : DataObject
-   {
+    public class GetGlobalAchievementPercentagesForAppResponseAchievement : DataObject
+    {
         /// <summary>
-       /// The name of the achievement.
+        /// The name of the achievement.
         /// </summary>
         [JsonProperty("name")]
-       public string Name { get; internal set; }
+        public string Name { get; internal set; }
         /// <summary>
-       /// Percentage of player population that has unlocked the achievement.
+        /// Percentage of player population that has unlocked the achievement.
         /// </summary>
         [JsonProperty("percent")]
-       public double Percent { get; internal set; }
-   }
+        public double Percent { get; internal set; }
+    }
 
     [Serializable]
-   public class GetGlobalAchievementPercentagesForAppResponseAchievementpercentages : DataObject
-   {
+    public class GetGlobalAchievementPercentagesForAppResponseAchievementpercentages : DataObject
+    {
         /// <summary>
-       /// Collection of <see cref="GetGlobalAchievementPercentagesForAppResponseAchievement"/> instances.
+        /// Collection of <see cref="GetGlobalAchievementPercentagesForAppResponseAchievement"/> instances.
         /// </summary>
         [JsonProperty("achievements")]
-       public QueryMasterCollection<GetGlobalAchievementPercentagesForAppResponseAchievement> Achievements { get; internal set; }
-   }
+        public QueryMasterCollection<GetGlobalAchievementPercentagesForAppResponseAchievement> Achievements { get; internal set; }
+    }
 
 }

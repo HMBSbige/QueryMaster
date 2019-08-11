@@ -25,12 +25,11 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster.GameServer
+using QueryMaster.GameServer.DataObjects;
+using System;
+
+namespace QueryMaster.GameServer.EventArgs
 {
     /// <summary>
     /// Provides data for PlayerOnPLayerTriggered event.

@@ -25,12 +25,12 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Net;
-using QueryMaster;
+
 namespace QueryMaster.GameServer
 {
     class RconSource : Rcon
@@ -51,7 +51,7 @@ namespace QueryMaster.GameServer
                     RconSource obj = new RconSource(conInfo);
                     obj.socket = new TcpQuery(conInfo);
                     byte[] recvData = new byte[50];
-                    RconSrcPacket packet = new RconSrcPacket() { Body = msg, Id = (int)PacketId.ExecCmd, Type = (int)PacketType.Auth };
+                    RconSrcPacket packet = new RconSrcPacket { Body = msg, Id = (int)PacketId.ExecCmd, Type = (int)PacketType.Auth };
                     recvData = obj.socket.GetResponse(RconUtil.GetBytes(packet));
                     int header;
                     try
@@ -71,15 +71,15 @@ namespace QueryMaster.GameServer
                 }, conInfo.Retries + 1, null, conInfo.ThrowExceptions);
         }
 
-        public override string SendCommand(string command,bool isMultipacketResponse=false)
+        public override string SendCommand(string command, bool isMultipacketResponse = false)
         {
             ThrowIfDisposed();
-            return Invoke<string>(() => sendCommand(command, isMultipacketResponse), 1, null, ConInfo.ThrowExceptions);
+            return Invoke(() => sendCommand(command, isMultipacketResponse), 1, null, ConInfo.ThrowExceptions);
         }
 
-        private string sendCommand(string command,bool isMultipacketResponse)
+        private string sendCommand(string command, bool isMultipacketResponse)
         {
-            RconSrcPacket senPacket = new RconSrcPacket() { Body = command, Id = (int)PacketId.ExecCmd, Type = (int)PacketType.Exec };
+            RconSrcPacket senPacket = new RconSrcPacket { Body = command, Id = (int)PacketId.ExecCmd, Type = (int)PacketType.Exec };
             List<byte[]> recvData = socket.GetMultiPacketResponse(RconUtil.GetBytes(senPacket));
             StringBuilder str = new StringBuilder();
             try

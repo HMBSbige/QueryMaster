@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace QueryMaster
+﻿namespace QueryMaster
 {
 
 
@@ -22,7 +17,7 @@ namespace QueryMaster
         GoldSource
     }
 
-    
+
 
     /// <summary>
     /// Specifies the Region
@@ -79,7 +74,7 @@ namespace QueryMaster
         A2S_INFO_Obsolete = 0x6D,
         A2S_PLAYER = 0x44,
         A2S_RULES = 0x45,
-        A2S_SERVERQUERY_GETCHALLENGE = 0x41,
+        A2S_SERVERQUERY_GETCHALLENGE = 0x41
     }
 
     //Used in Source Rcon

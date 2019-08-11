@@ -25,15 +25,14 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using QueryMaster.Steam;
+using QueryMaster.Steam.DataObjects.ISteamUserStats;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster
+namespace QueryMaster.JsonConverters
 {
     class GetGlobalStatsForGameResponseStatConverter : JsonConverter
     {
@@ -44,9 +43,9 @@ namespace QueryMaster
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-           List<GetGlobalStatsForGameResponseStat> stats = new List<GetGlobalStatsForGameResponseStat>();
-           JObject jsonObject = JObject.Load(reader);
-            foreach(JProperty i in jsonObject.Properties())
+            List<GetGlobalStatsForGameResponseStat> stats = new List<GetGlobalStatsForGameResponseStat>();
+            JObject jsonObject = JObject.Load(reader);
+            foreach (JProperty i in jsonObject.Properties())
             {
                 stats.Add(new GetGlobalStatsForGameResponseStat
                 {
@@ -61,7 +60,7 @@ namespace QueryMaster
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            serializer.Serialize(writer,value);
+            serializer.Serialize(writer, value);
         }
     }
 }

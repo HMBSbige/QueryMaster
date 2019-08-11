@@ -25,14 +25,13 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster
+namespace QueryMaster.ContractSolver
 {
     class OriginalNameContractResolver : DefaultContractResolver
     {

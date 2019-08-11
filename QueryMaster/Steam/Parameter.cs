@@ -1,5 +1,4 @@
-﻿
-#region License
+﻿#region License
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -25,25 +24,21 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster.Steam
 {
     /// <summary>
     /// Represents a parameter of Steam's web method.
     /// </summary>
-   public class Parameter
+    public class Parameter
     {
-       /// <summary>
-       /// Name of parameter.
-       /// </summary>
-       public string Name { get; set; }
-       /// <summary>
-       /// Valueof the parameter.
-       /// </summary>
-       public string Value { get; set; }
+        /// <summary>
+        /// Name of parameter.
+        /// </summary>
+        public string Name { get; set; }
+        /// <summary>
+        /// Valueof the parameter.
+        /// </summary>
+        public string Value { get; set; }
     }
 }

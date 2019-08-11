@@ -25,46 +25,43 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster.Steam
+using QueryMaster.Steam.DataObjects.ISteamNews;
+using System.Globalization;
+
+namespace QueryMaster.Steam.Interfaces
 {
     /// <summary>
     /// Represents the ISteamNews interface.
     /// </summary>
-   public class ISteamNews : InterfaceBase
+    public class ISteamNews : InterfaceBase
     {
-       internal ISteamNews()
-       {
-           Interface = "ISteamNews";
-       }
-       /// <summary>
-       /// Calls GetNewsForApp web api method(version 2).
-       /// </summary>
-       /// <param name="appId">Game/item to retrieve news for. This can be any valid app ID as seen in the Steam store.</param>
-       /// <param name="maxLength">Max length of the contents field.</param>
-       /// <param name="endDate">Unix timestamp, returns posts before this date.</param>
-       /// <param name="count">Max number of news items to retrieve. Default: 20. </param>
-       /// <param name="feeds">Comma-seperated list of feed names to return news for.</param>
-       /// <returns>Instance of <see cref="GetNewsForAppResponse"/>.</returns>
-       public GetNewsForAppResponse GetNewsForApp(UInt32 appId, UInt32? maxLength = null, UInt32? endDate=null,UInt32? count=null,string feeds=null)
-       {
-           SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetNewsForApp", Version = 2 };
-           url.Parameters.Add(new Parameter { Name = "appid", Value = appId.ToString(CultureInfo.InvariantCulture) });
-           if(maxLength !=null)
-               url.Parameters.Add(new Parameter { Name = "maxlength", Value = maxLength.ToString() });
-           if(endDate !=null)
-               url.Parameters.Add(new Parameter { Name = "enddate", Value = endDate.ToString() });
-           if (count != null)
-               url.Parameters.Add(new Parameter { Name = "count", Value = count.ToString() });
-           if (feeds != null)
-               url.Parameters.Add(new Parameter { Name = "feeds", Value = feeds.ToString() });
-           return GetParsedResponse<GetNewsForAppResponse>(url);
-       }
+        internal ISteamNews()
+        {
+            Interface = "ISteamNews";
+        }
+        /// <summary>
+        /// Calls GetNewsForApp web api method(version 2).
+        /// </summary>
+        /// <param name="appId">Game/item to retrieve news for. This can be any valid app ID as seen in the Steam store.</param>
+        /// <param name="maxLength">Max length of the contents field.</param>
+        /// <param name="endDate">Unix timestamp, returns posts before this date.</param>
+        /// <param name="count">Max number of news items to retrieve. Default: 20. </param>
+        /// <param name="feeds">Comma-seperated list of feed names to return news for.</param>
+        /// <returns>Instance of <see cref="GetNewsForAppResponse"/>.</returns>
+        public GetNewsForAppResponse GetNewsForApp(uint appId, uint? maxLength = null, uint? endDate = null, uint? count = null, string feeds = null)
+        {
+            SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetNewsForApp", Version = 2 };
+            url.Parameters.Add(new Parameter { Name = "appid", Value = appId.ToString(CultureInfo.InvariantCulture) });
+            if (maxLength != null)
+                url.Parameters.Add(new Parameter { Name = "maxlength", Value = maxLength.ToString() });
+            if (endDate != null)
+                url.Parameters.Add(new Parameter { Name = "enddate", Value = endDate.ToString() });
+            if (count != null)
+                url.Parameters.Add(new Parameter { Name = "count", Value = count.ToString() });
+            if (feeds != null)
+                url.Parameters.Add(new Parameter { Name = "feeds", Value = feeds });
+            return GetParsedResponse<GetNewsForAppResponse>(url);
+        }
     }
 }

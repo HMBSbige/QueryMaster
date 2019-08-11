@@ -1,5 +1,4 @@
-﻿
-#region License
+﻿#region License
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -25,10 +24,6 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster.Steam
 {
@@ -72,7 +67,7 @@ namespace QueryMaster.Steam
         /// <summary>
         /// Private.
         /// </summary>
-        Private=1,
+        Private = 1,
         /// <summary>
         /// FriendsOnly.
         /// </summary>
@@ -122,7 +117,7 @@ namespace QueryMaster.Steam
         /// <summary>
         /// LookingToPlay.
         /// </summary>
-        LookingToPlay 
+        LookingToPlay
     }
 
 

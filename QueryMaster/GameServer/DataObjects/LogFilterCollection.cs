@@ -25,23 +25,22 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster.GameServer
+namespace QueryMaster.GameServer.DataObjects
 {
     /// <summary>
     /// Represents collection of logfilter.
     /// </summary>
-    public class LogFilterCollection:IEnumerable<LogFilter>
+    public class LogFilterCollection : IEnumerable<LogFilter>
     {
         private List<LogFilter> filterList = new List<LogFilter>();
         /// <summary>
         /// used to set lock on add/remove of filter.
         /// </summary>
-        protected internal static object  LockObj = new object();
+        protected internal static object LockObj = new object();
         /// <summary>
         /// Enables all filters.
         /// </summary>
@@ -55,7 +54,7 @@ namespace QueryMaster.GameServer
         /// <param name="type">Filter type.</param>
         public void EnableAll(Type type)
         {
-            filterList.ForEach(x => { if (x.GetType() == type)x.Enabled = true; });
+            filterList.ForEach(x => { if (x.GetType() == type) x.Enabled = true; });
         }
 
         /// <summary>
@@ -71,7 +70,7 @@ namespace QueryMaster.GameServer
         /// <param name="type">Filter type.</param>
         public void DisableAll(Type type)
         {
-            filterList.ForEach(x => { if (x.GetType() == type)x.Enabled = false; });
+            filterList.ForEach(x => { if (x.GetType() == type) x.Enabled = false; });
         }
         /// <summary>
         /// Adds a filter to the end of the collection.
@@ -79,7 +78,7 @@ namespace QueryMaster.GameServer
         /// <param name="filter"></param>
         public void Add(LogFilter filter)
         {
-            lock(LockObj)
+            lock (LockObj)
                 filterList.Add(filter);
         }
         /// <summary>
@@ -104,7 +103,7 @@ namespace QueryMaster.GameServer
         /// <returns></returns>
         public IEnumerator<LogFilter> GetEnumerator()
         {
-            foreach(LogFilter i in filterList )
+            foreach (LogFilter i in filterList)
             {
                 yield return i;
             }

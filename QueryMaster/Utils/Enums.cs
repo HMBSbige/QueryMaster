@@ -1,5 +1,4 @@
-﻿
-#region License
+﻿#region License
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -25,10 +24,6 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster.Utils
 {
@@ -124,23 +119,23 @@ namespace QueryMaster.Utils
         /// <summary>
         /// Invalid.
         /// </summary>
-        Invalid=-1,
+        Invalid = -1,
         /// <summary>
         /// All.
         /// </summary>
-        All=0,
+        All = 0,
         /// <summary>
         /// Desktop.
         /// </summary>
-        Desktop=1,
+        Desktop = 1,
         /// <summary>
         /// Console.
         /// </summary>
-        Console=2,
+        Console = 2,
         /// <summary>
         /// Web.
         /// </summary>
-        Web=4,
-        
+        Web = 4
+
     }
 }

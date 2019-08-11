@@ -25,15 +25,14 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Newtonsoft.Json;
 using System.Net;
 using System.Text.RegularExpressions;
 
-namespace QueryMaster
+namespace QueryMaster.JsonConverters
 {
     class StringIpEndPointConverter : JsonConverter
     {
@@ -57,19 +56,20 @@ namespace QueryMaster
                 {
                     endPoints.Add(Util.ToIPEndPoint(value));
                     value = reader.ReadAsString();
-                    if (String.IsNullOrEmpty(value))
+                    if (string.IsNullOrEmpty(value))
                         break;
                 }
                 return new QueryMasterCollection<IPEndPoint>(endPoints);
             }
-            else if (objectType == typeof(IPEndPoint))
+
+            if (objectType == typeof(IPEndPoint))
             {
                 if (Regex.Match(value, @"^(\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}):(\d{1,5})$").Success)
                 {
                     IPEndPoint endPoint = Util.ToIPEndPoint(value);
                     return endPoint;
                 }
-                
+
             }
             return null;
         }
@@ -78,7 +78,7 @@ namespace QueryMaster
         {
             if (value.GetType() == typeof(QueryMasterCollection<IPEndPoint>))
             {
-                var endPoints=value as QueryMasterCollection<IPEndPoint>;
+                var endPoints = value as QueryMasterCollection<IPEndPoint>;
                 writer.WriteValue(endPoints.ToString());
             }
             else if (value.GetType() == typeof(IPEndPoint))
@@ -87,7 +87,7 @@ namespace QueryMaster
                 writer.WriteValue(ip.ToString());
             }
 
-            
+
         }
     }
 }

@@ -25,25 +25,23 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 #endregion
+
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace QueryMaster.Steam
+namespace QueryMaster.Steam.DataObjects.ISteamUserStats
 {
     /// <summary>
     /// Contains response of GetUserStatsForGame method.
     /// </summary>
     [Serializable]
-   public class GetUserStatsForGameResponse : SteamResponse 
+    public class GetUserStatsForGameResponse : SteamResponse
     {
         /// <summary>
         /// Parsed response.
         /// </summary>
-       [JsonProperty("playerstats")]
-       public GetUserStatsForGameResponsePlayerstats ParsedResponse { get; internal set; }
+        [JsonProperty("playerstats")]
+        public GetUserStatsForGameResponsePlayerstats ParsedResponse { get; internal set; }
     }
     [Serializable]
     public class GetUserStatsForGameResponsePlayerstats : DataObject
@@ -70,32 +68,32 @@ namespace QueryMaster.Steam
         public QueryMasterCollection<GetUserStatsForGameResponseAchievement> Achievements { get; internal set; }
     }
     [Serializable]
-   public class GetUserStatsForGameResponseStat : DataObject
-   {
-       /// <summary>
-       /// Name of stat.
-       /// </summary>
-       [JsonProperty("name")]
-       public string Name { get; internal set; }
-       /// <summary>
-       /// Value of stat.
-       /// </summary>
-       [JsonProperty("value")]
-       public int Value { get; internal set; }
-   }
+    public class GetUserStatsForGameResponseStat : DataObject
+    {
+        /// <summary>
+        /// Name of stat.
+        /// </summary>
+        [JsonProperty("name")]
+        public string Name { get; internal set; }
+        /// <summary>
+        /// Value of stat.
+        /// </summary>
+        [JsonProperty("value")]
+        public int Value { get; internal set; }
+    }
     [Serializable]
-   public class GetUserStatsForGameResponseAchievement : DataObject
-   {
-       /// <summary>
-       /// Name of achievement.
-       /// </summary>
-       [JsonProperty("name")]
-       public string Name { get; internal set; }
-       /// <summary>
-       /// Indicates whether or not the achievement has been unlocked by the user. 
-       /// </summary>
-       [JsonProperty("achieved")]
-       public bool HasAchieved { get; internal set; }
-   }
+    public class GetUserStatsForGameResponseAchievement : DataObject
+    {
+        /// <summary>
+        /// Name of achievement.
+        /// </summary>
+        [JsonProperty("name")]
+        public string Name { get; internal set; }
+        /// <summary>
+        /// Indicates whether or not the achievement has been unlocked by the user. 
+        /// </summary>
+        [JsonProperty("achieved")]
+        public bool HasAchieved { get; internal set; }
+    }
 
 }
